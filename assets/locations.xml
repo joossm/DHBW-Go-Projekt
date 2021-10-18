@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<locations>
+	<location>
+		<name>Frankfurt</name>
+	</location>
+	<location>
+		<name>Mosbach</name>
+	</location>
+	<location>
+		<name>Dresden</name>
+	</location>
+</locations>
