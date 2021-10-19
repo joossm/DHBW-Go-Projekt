@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "Matthias Jooß",
+    "address": "Max-Planck-Straße 24, 74081 Heilbronn"
+  },
+  {
+    "id": 2,
+    "name": "Emil Bartoldus",
+    "address": "Germete"
+  },
+  {
+    "id": 3,
+    "name": "Simon Berberich",
+    "address": "Miltenberg"
+  }
+]
