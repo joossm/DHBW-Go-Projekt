@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-var path = "D:\\Benutzer\\DHBW-Doks\\Semester5\\Vorlesungen\\Go\\Abgabe\\GoProjekt\\assets\\locations.xml" // absolute Path cause the relative is not working right now
+var path = "../../assets/locations.xml" // absolute Path cause the relative is not working right now
 var locations Locations
 
 type Locations struct {
