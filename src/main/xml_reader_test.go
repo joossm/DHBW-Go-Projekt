@@ -5,12 +5,13 @@ import (
 )
 
 func TestRead(t *testing.T) {
-	a := read()
-	if a.getLength() <= 0 {
+	main()
+	loc := read()
+	if loc.getLength() <= 0 {
 		t.Error("The locations List is empty")
 	} else {
-		for i := 0; i < len(a.Locations); i++ {
-			if a.Locations[i].Name == "" {
+		for i := 0; i < len(loc.Locations); i++ {
+			if loc.Locations[i].Name == "" {
 				t.Error("Location name may not be empty")
 			}
 		}

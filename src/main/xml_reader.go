@@ -1,13 +1,15 @@
 package main
 
 import (
+	"GoPruefungsaufgabe/src/main/config"
 	"encoding/xml"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
 )
 
-var path = "D:\\Benutzer\\DHBW-Doks\\Semester5\\Vorlesungen\\Go\\Abgabe\\GoProjekt\\assets\\locations.xml" // absolute Path cause the relative is not working right now
+
 
 type Locations struct {
 	XMLName   xml.Name   `xml:"locations"`
@@ -28,16 +30,17 @@ func (Location) printName() string {
 	return "To Do"
 }
 func main(){
+	config.Init()
 	read()
 }
 func read() Locations {
-	xmlFile, _ := os.Open(path)
 	var locations Locations
-	fmt.Println("Successfully Opened " + path)
-	// defer the closing of our xmlFile so that we can parse it later on
+	var path = flag.Lookup("xmlPath").Value.String()
+	xmlFile, _ := os.Open(path)
 	defer xmlFile.Close()
 	byteValue, _ := ioutil.ReadAll(xmlFile)
 	xml.Unmarshal(byteValue, &locations)
+
 	for i := 0; i < len(locations.Locations); i++ {
 		fmt.Println(locations.Locations[i].Name)
 	}
