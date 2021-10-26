@@ -1,0 +1,16 @@
+LOGIN, Oct 26 19:03:19, Liam, Friedrich
+LOGIN, Oct 26 19:03:20, Liam, Friedrich
+LOGIN, Oct 26 19:04:21, CluckCaptain85, Mama
+LOGOUT, Oct 26 19:04:29, CluckCaptain85, Mama
+LOGIN, Oct 26 19:04:39, CluckCaptain85, Mama
+LOGOUT, Oct 26 19:04:46, CluckCaptain85, Mama
+LOGIN, Oct 26 19:14:38, CluckCaptain85, Mama
+LOGIN, Oct 26 19:26:22, CluckCaptain85, Mama
+LOGOUT, Oct 26 19:26:24, CluckCaptain85, Mama
+LOGIN, Oct 26 19:57:16, Simon Berberich, Miltenberg
+LOGOUT, Oct 26 19:57:36, Simon Berberich, Miltenberg
+LOGIN, Oct 26 19:57:50, Simon Berberich, Miltenberg
+LOGIN, Oct 26 19:57:55, Simon Berberich, Miltenberg
+LOGOUT, Oct 26 19:58:11, Simon Berberich, Miltenberg
+LOGIN, Oct 26 19:58:51, Simon Berberich, Miltenberg
+LOGOUT, Oct 26 19:59:01, Simon Berberich, Miltenberg
