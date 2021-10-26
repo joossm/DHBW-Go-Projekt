@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"GoProject/model"
-	"GoProject/session"
 	"encoding/json"
 	"fmt"
 	"github.com/skip2/go-qrcode"
@@ -166,12 +165,8 @@ func AddNewUserFunc(w http.ResponseWriter, r *http.Request) {
 		}
 		newUser.Name = r.FormValue("name")
 		newUser.Address = r.FormValue("address")
-		cookie := session.CreateToken(newUser)
+		//cookie := session.CreateToken(newUser)
 
-		http.SetCookie(
-			w,
-			&cookie,
-		)
 		var err error
 		checkError(err)
 

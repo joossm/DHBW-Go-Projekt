@@ -1,6 +1,6 @@
 package main
 
-/*//func main() {
+/*//func model() {
 	fileServer := http.FileServer(http.Dir("GoProject"))
 	http.Handle("/", fileServer)
 	http.HandleFunc("/addnewuser/", handlers.AddNewUserFunc)

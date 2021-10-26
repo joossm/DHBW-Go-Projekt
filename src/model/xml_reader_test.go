@@ -1,4 +1,4 @@
-package main
+package model
 
 import (
 	"testing"
@@ -6,7 +6,7 @@ import (
 
 func TestRead(t *testing.T) {
 	main()
-	loc := read()
+	loc := Read()
 	if loc.getLength() <= 0 {
 		t.Error("The locations List is empty")
 	} else {

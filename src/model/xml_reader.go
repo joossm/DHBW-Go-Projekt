@@ -1,15 +1,14 @@
-package main
+package model
 
 import (
-	"GoPruefungsaufgabe/src/main/config"
+	"GoPruefungsaufgabe/src/model/config"
+	"encoding/json"
 	"encoding/xml"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
 )
-
-
 
 type Locations struct {
 	XMLName   xml.Name   `xml:"locations"`
@@ -29,11 +28,11 @@ func (this Locations) getLength() int {
 func (Location) printName() string {
 	return "To Do"
 }
-func main(){
+func main() {
 	config.Init()
-	read()
+	Read()
 }
-func read() Locations {
+func Read() Locations {
 	var locations Locations
 	var path = flag.Lookup("xmlPath").Value.String()
 	xmlFile, _ := os.Open(path)
@@ -47,4 +46,18 @@ func read() Locations {
 
 	return locations
 
+}
+func ShowAllLocations() (au *Locations) {
+	file, err := os.OpenFile("assets/locations.xml", os.O_RDWR|os.O_APPEND, 0666)
+	errorHandling(err)
+	b, err := ioutil.ReadAll(file)
+	var locations Locations
+	json.Unmarshal(b, &locations.Locations)
+
+	return &locations
+}
+func errorHandling(err error) {
+	if err != nil {
+		fmt.Println(err)
+	}
 }

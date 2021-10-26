@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title> LoginPage</title>
+    <title>LoginPage</title>
 </head>
-	<body>
-	<h1>Bitte anmelden</h1>
-		<form>
-			<label for="username">Benutzername:
-				<input type="text" id="username" name="username">
-			</label><br><br>
-			<label for="adress">Adresse:
-				<input type= "text" id="adress" name="adress">
-			</label><br><br>
-			<button type="button">anmelden</button>
-		</form>
-	</body>
+<body>
+<h1>Please login:</h1>
+<form action="/register" method="post">
+    Full name:<input type="text" name="name">
+    Address:<input type="text" name="address">
+    <input type="submit" value="Login">
+</form>
+</body>
 </html>
