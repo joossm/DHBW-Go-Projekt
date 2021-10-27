@@ -51,7 +51,7 @@ func main() {
 	}()
 
 	go func() {
-		log.Printf("About to listen on 8443. Go to https://127.0.0.1:8443/register")
+		log.Printf("About to listen on 8443. Go to https://127.0.0.1:8443/login?token=FPLLNGZIEYOH")
 		http.ListenAndServeTLS(":"+port1, "server.crt", "server.key", serverMuxA) // port1 added needs to be tested
 	}()
 
