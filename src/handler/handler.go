@@ -1,10 +1,10 @@
 package handler
 
 import (
-	writer "GoPruefungsaufgabe/src/log"
-	"GoPruefungsaufgabe/src/model"
-	"GoPruefungsaufgabe/src/token"
-	_ "GoPruefungsaufgabe/src/token"
+	writer "GoProjekt/src/log"
+	"GoProjekt/src/model"
+	"GoProjekt/src/token"
+	_ "GoProjekt/src/token"
 
 	"fmt"
 	"github.com/skip2/go-qrcode"
@@ -151,9 +151,10 @@ func End(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/end", 301)
 	}
 }
+
 func SelectLocation(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		locations := model.ShowAllLocations()
+		locations := model.Read
 		t, err := template.ParseFiles("html/selectLocation.html")
 		errorHandling(err)
 		err = t.Execute(w, locations)

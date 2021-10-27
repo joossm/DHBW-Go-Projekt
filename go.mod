@@ -1,4 +1,4 @@
-module GoPruefungsaufgabe
+module GoProjekt
 
 go 1.17
 

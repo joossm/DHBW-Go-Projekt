@@ -1,7 +1,7 @@
 package model
 
 import (
-	"GoPruefungsaufgabe/src/model/config"
+	"GoProjekt/src/model/config"
 	"encoding/json"
 	"encoding/xml"
 	"flag"
@@ -39,9 +39,9 @@ func Read() Locations {
 	defer xmlFile.Close()
 	byteValue, _ := ioutil.ReadAll(xmlFile)
 	xml.Unmarshal(byteValue, &locations)
-
+	//var ret []Location
 	for i := 0; i < len(locations.Locations); i++ {
-		fmt.Println(locations.Locations[i].Name)
+		//	ret[i] =locations.Locations[i].Name
 	}
 
 	return locations

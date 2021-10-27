@@ -1,9 +1,9 @@
 package main
 
 import (
-	"GoPruefungsaufgabe/src/handler"
-	"GoPruefungsaufgabe/src/model/config"
-	token "GoPruefungsaufgabe/src/token"
+	"GoProjekt/src/handler"
+	"GoProjekt/src/model/config"
+	token "GoProjekt/src/token"
 	"flag"
 	_ "github.com/skip2/go-qrcode"
 	_ "html/template"
@@ -25,7 +25,7 @@ func main() {
 	serverMuxB.Handle("/html/", http.StripPrefix("/html", fileServer))
 
 	serverMuxA.HandleFunc("/end", handler.End)
-	serverMuxA.HandleFunc("/register", handler.LoginUser)
+	serverMuxA.HandleFunc("/login", handler.LoginUser)
 	serverMuxA.HandleFunc("/logout", handler.LogoutUser)
 	serverMuxA.HandleFunc("/token", token.CreateToken)
 	serverMuxA.HandleFunc("/location", handler.SelectLocation)
