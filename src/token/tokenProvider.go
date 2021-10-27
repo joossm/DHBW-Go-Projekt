@@ -7,6 +7,7 @@ import (
 
 var letterRunes = []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 var m = map[int]string{}
+var newTokenMap = map[string]string{}
 
 func CreateToken(res http.ResponseWriter, r *http.Request) {
 	n := 12
