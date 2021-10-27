@@ -1,20 +1,18 @@
 package model
 
 import (
+	"GoProjekt/src/model/config"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-func TestRead(t *testing.T) {
-	main()
-	loc := Read()
-	if loc.getLength() <= 0 {
-		t.Error("The locations List is empty")
-	} else {
+func TestRegisterLocations(t *testing.T) {
+	//Test nicht möglich da Path falsch
+	config.Init()
+	loc := RegisterLocations()
+	assert.Equal(t, loc.getLength()!=0, true)
 		for i := 0; i < len(loc.Locations); i++ {
-			if loc.Locations[i].Name == "" {
-				t.Error("Location name may not be empty")
-			}
+			assert.Equal(t, loc.Locations[i].Name != "", true)
 		}
 	}
 
-}

@@ -1,7 +1,6 @@
 package model
 
 import (
-	"GoProjekt/src/model/config"
 	"encoding/xml"
 	"flag"
 	"fmt"
@@ -34,24 +33,6 @@ func (this LocationsList) ToStrings() []string {
 	}
 	return locStrings
 }
-func main() {
-	config.Init()
-	Read()
-}
-func Read() LocationsList {
-	var locations LocationsList
-	var path = flag.Lookup("xmlPath").Value.String()
-	xmlFile, _ := os.Open(path)
-	defer xmlFile.Close()
-	byteValue, _ := ioutil.ReadAll(xmlFile)
-	xml.Unmarshal(byteValue, &locations)
-
-	for i := 0; i < len(locations.Locations); i++ {
-		println(locations.Locations[i].Name)
-	}
-	return locations
-}
-
 func errorHandling(err error) {
 	if err != nil {
 		fmt.Println(err)
@@ -77,9 +58,11 @@ type AllLocations struct {
 func RegisterLocations() LocationsList {
 	var locationsList LocationsList
 	var path = flag.Lookup("xmlPath").Value.String()
+	fmt.Println(path)
 	xmlFile, _ := os.Open(path)
 	defer xmlFile.Close()
 	byteValue, _ := ioutil.ReadAll(xmlFile)
 	xml.Unmarshal(byteValue, &locationsList)
+	fmt.Println(locationsList.ToStrings())
 	return locationsList
 }
