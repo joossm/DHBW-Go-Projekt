@@ -3,6 +3,7 @@ package cmd
 import (
 	"bufio"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 )
@@ -10,27 +11,20 @@ import (
 func Lauft() {
 
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Please enter the day you are looking for. (Day Format: DD.MM.YYYY)")
-
-	for {
-		fmt.Print("-> ")
-		text, _ := reader.ReadString('\n')
-		text = strings.Replace(text, "\n", "", -1)
-		if strings.Compare("hi", text) == 0 {
-			fmt.Println("Hello, Yourself")
-			validDateFormat("23.13.2323")
-			break
-		}
+	fmt.Println("Please enter the day you are looking for. (Day Format: YYYY-MM-DD)")
+	fmt.Print("-> ")
+	text, _ := reader.ReadString('\n')
+	text = strings.Replace(text, "\n", "", -1)
+	if validDateFormat(text) {
+		fmt.Println("wahr")
 	}
-
 }
 
 func validDateFormat(date string) bool {
-	result := true
 	var compareOne []string
-	compareOne = strings.Split(date, ".")
+	compareOne = strings.Split(date, "-")
 	for index, element := range compareOne {
-		if index == 0 || index == 1 {
+		if index == 1 || index == 2 {
 			if len(element) != 2 {
 				return false
 			}
@@ -39,7 +33,7 @@ func validDateFormat(date string) bool {
 					return false
 				}
 			}
-		} else if index == 3 {
+		} else if index == 0 {
 			if len(element) != 4 {
 				return false
 			}
@@ -52,7 +46,13 @@ func validDateFormat(date string) bool {
 			return false
 		}
 	}
+	return true
+}
 
-	return result
-
+func readFile(date string) {
+	file, err := ioutil.ReadFile("src/log/files/" + date + ".txt")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(file)
 }
