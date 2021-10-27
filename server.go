@@ -15,7 +15,6 @@ import (
 )
 
 func main() {
-
 	//cmd.Lauft()
 
 	config.Init()
@@ -33,36 +32,17 @@ func main() {
 	fileServer := http.FileServer(http.Dir("./html/"))
 	serverMuxA.Handle("/html/", http.StripPrefix("/html", fileServer))
 	serverMuxB.Handle("/html/", http.StripPrefix("/html", fileServer))
-
 	serverMuxA.HandleFunc("/end", handler.End)
 	serverMuxA.HandleFunc("/login", handler.LoginUser)
 	serverMuxA.HandleFunc("/logout", handler.LogoutUser)
-	serverMuxA.HandleFunc("/token", token.CreateToken)
 	serverMuxA.HandleFunc("/location", handler.SelectLocation)
 	serverMuxB.HandleFunc("/qr", handler.QrCodeCreate)
 	go func() {
 		token.CreateAndUpdateTokenMap(locations)
-		println(token.GetTokenByLocation(locations[0]))
-		println(token.GetTokenByLocation(locations[1]))
-		println(token.GetTokenByLocation(locations[2]))
-		println(token.GetTokenByLocation(locations[3]))
-		println(token.GetTokenByLocation(locations[4]))
-		//var websiteToken string
-		/*websiteToken = token.CreateAndUpdateToken()
-		if token.ValidateToken(websiteToken) == "true" {
-			log.Println("Token successful Updated " + websiteToken)
-		} else {
-			log.Println("Token Updated not successful")
-		}*/
-		for now := range time.Tick(5 * time.Minute) {
-			log.Println(now, "Token Update started")
+
+		for now := range time.Tick(30 * time.Minute) {
 			token.CreateAndUpdateTokenMap(locations)
-			//websiteToken = token.CreateAndUpdateToken()
-			/*if token.ValidateToken(websiteToken) == "true" {
-				log.Println(now, "Token successful Updated")
-			} else {
-				log.Println(now, "Token Updated not successful")
-			}*/
+			log.Println(now, "Token Updated")
 		}
 	}()
 
