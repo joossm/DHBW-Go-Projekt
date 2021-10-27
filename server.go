@@ -40,7 +40,7 @@ func main() {
 	go func() {
 		token.CreateAndUpdateTokenMap(locations)
 
-		for now := range time.Tick(5 * time.Second) {
+		for now := range time.Tick(5 * time.Minute) {
 			token.CreateAndUpdateTokenMap(locations)
 			log.Println(now, "Token Updated")
 		}

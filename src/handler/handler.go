@@ -9,6 +9,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"regexp"
 )
 
 func QrCodeCreate(w http.ResponseWriter, r *http.Request) {
@@ -31,6 +32,16 @@ func parseAndExecuteWebsite(filename string, w http.ResponseWriter, data interfa
 	errorHandling(err)
 }
 
+func checkFormValue(w http.ResponseWriter, r *http.Request, forms ...string) (erg bool, str string) {
+	for _, form := range forms {
+		matchString, _ := regexp.MatchString("^[a-zA-Z]+$", r.FormValue(form))
+		if matchString == false {
+			return false, "Please use only upper and lower case letters for full name and address. Thank you."
+		}
+
+	}
+	return true, ""
+}
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	if alreadyLoggedIn(r) == true {
 		var name = informationsFromCookies("name", r)
@@ -73,6 +84,12 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 			}
 
 		} else {
+			resBool, errStr := checkFormValue(w, r, "name", "address")
+			if resBool == false {
+				parseAndExecuteWebsite("html/wrongInput.html", w, errStr)
+
+				return
+			}
 			name := r.FormValue("name")
 			address := r.FormValue("address")
 			var location = informationsFromCookies("location", r)

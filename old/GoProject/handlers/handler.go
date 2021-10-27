@@ -157,10 +157,9 @@ func AddNewUserFunc(w http.ResponseWriter, r *http.Request) {
 	} else {
 		resBool, errStr := checkFormValue(w, r, "name", "address")
 		if resBool == false {
-			t, err := template.ParseFiles("templates/notSucceded.html")
+			t, err := template.ParseFiles("templates/wrongInput.html")
 			checkError(err)
 			t.Execute(w, errStr)
-
 			return
 		}
 		newUser.Name = r.FormValue("name")
