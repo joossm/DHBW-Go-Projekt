@@ -14,17 +14,26 @@ import (
 	"net/http"
 )
 
-func QrCodeCreate(res http.ResponseWriter, r *http.Request) {
+func QrCodeCreate(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		log.Println(r.URL.Query().Get("location"))
+		t, err := template.ParseFiles("html/qrPage.html")
+		errorHandling(err)
+		err = t.Execute(w, nil)
+		errorHandling(err)
+	} else {
 
-	var websiteUrl = "https://127.0.0.1:8444/qrsite"
-	var websiteParameter = "?token="
-	var websiteToken = token.GetActiveToken()
-	var completeUrl = websiteUrl + websiteParameter + websiteToken
+		log.Println(r.URL.Query().Get("location"))
+		var websiteUrl = "https://127.0.0.1:8444/qrsite"
+		var websiteParameter = "?token="
+		var websiteToken = token.GetActiveToken()
+		var completeUrl = websiteUrl + websiteParameter + websiteToken
 
-	var png []byte
-	png, err := qrcode.Encode(completeUrl, qrcode.Medium, 256)
-	errorHandling(err)
-	res.Write(png)
+		var png []byte
+		png, err := qrcode.Encode(completeUrl, qrcode.Medium, 256)
+		errorHandling(err)
+		w.Write(png)
+	}
 
 }
 
@@ -154,7 +163,7 @@ func End(w http.ResponseWriter, r *http.Request) {
 
 func SelectLocation(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		locations := model.Read
+		locations := model.ShowAllLocations()
 		t, err := template.ParseFiles("html/selectLocation.html")
 		errorHandling(err)
 		err = t.Execute(w, locations)

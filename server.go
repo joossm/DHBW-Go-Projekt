@@ -2,9 +2,11 @@ package main
 
 import (
 	"GoProjekt/src/handler"
+	"GoProjekt/src/model"
 	"GoProjekt/src/model/config"
 	token "GoProjekt/src/token"
 	"flag"
+	"fmt"
 	_ "github.com/skip2/go-qrcode"
 	_ "html/template"
 	"log"
@@ -15,11 +17,17 @@ import (
 
 func main() {
 	config.Init()
+	model.Read()
 	var port1 = flag.Lookup("port1").Value.String()
 	var port2 = flag.Lookup("port2").Value.String()
 	var serverMuxA = http.NewServeMux()
 	var serverMuxB = http.NewServeMux()
 
+	locations := model.RegisterLocations()
+	for i := 0; i < len(locations); i++ {
+		log.Println(locations[i])
+		serverMuxA.HandleFunc("/"+locations[i], handler.QrCodeCreate)
+	}
 	fileServer := http.FileServer(http.Dir("./html/"))
 	serverMuxA.Handle("/html/", http.StripPrefix("/html", fileServer))
 	serverMuxB.Handle("/html/", http.StripPrefix("/html", fileServer))
@@ -29,7 +37,7 @@ func main() {
 	serverMuxA.HandleFunc("/logout", handler.LogoutUser)
 	serverMuxA.HandleFunc("/token", token.CreateToken)
 	serverMuxA.HandleFunc("/location", handler.SelectLocation)
-	serverMuxB.HandleFunc("/qrSite", handler.QrCodeCreate)
+	serverMuxB.HandleFunc("/qr", handler.QrCodeCreate)
 	go func() {
 		var websiteToken string
 		websiteToken = token.CreateAndUpdateToken()
@@ -52,10 +60,21 @@ func main() {
 
 	go func() {
 		log.Printf("About to listen on 8443. Go to https://127.0.0.1:8443/login?token=FPLLNGZIEYOH")
-		http.ListenAndServeTLS(":"+port1, "server.crt", "server.key", serverMuxA) // port1 added needs to be tested
+		err := http.ListenAndServeTLS(":"+port1, "server.crt", "server.key", serverMuxA)
+		if err != nil {
+			return
+		} // port1 added needs to be tested
 	}()
 
-	log.Printf("About to listen on 8444. Go to https://127.0.0.1:8444/qrSite")
-	http.ListenAndServeTLS(":"+port2, "server.crt", "server.key", serverMuxB)
+	log.Printf("About to listen on 8444. Go to https://127.0.0.1:8444/qr")
+	err := http.ListenAndServeTLS(":"+port2, "server.crt", "server.key", serverMuxB)
+	if err != nil {
+		return
+	}
 
+}
+func errorHandling(err error) {
+	if err != nil {
+		fmt.Println(err)
+	}
 }

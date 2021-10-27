@@ -11,9 +11,10 @@ func WriteLoginToFile(textToWrite string) {
 	if err != nil {
 		panic(err)
 	}
-	var timestamp = time.Now().Format(time.Stamp)
 
+	var timestamp = time.Now().Format(time.Stamp)
 	var text = "LOGIN, " + timestamp + ", " + textToWrite + ";"
+
 	file = append(file, []byte(text)...)
 
 	// write the whole body at once

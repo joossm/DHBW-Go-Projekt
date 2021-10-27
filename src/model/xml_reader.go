@@ -2,7 +2,6 @@ package model
 
 import (
 	"GoProjekt/src/model/config"
-	"encoding/json"
 	"encoding/xml"
 	"flag"
 	"fmt"
@@ -39,25 +38,46 @@ func Read() Locations {
 	defer xmlFile.Close()
 	byteValue, _ := ioutil.ReadAll(xmlFile)
 	xml.Unmarshal(byteValue, &locations)
-	//var ret []Location
+
 	for i := 0; i < len(locations.Locations); i++ {
-		//	ret[i] =locations.Locations[i].Name
+		println(locations.Locations[i].Name)
 	}
-
 	return locations
-
 }
-func ShowAllLocations() (au *Locations) {
-	file, err := os.OpenFile("assets/locations.xml", os.O_RDWR|os.O_APPEND, 0666)
-	errorHandling(err)
-	b, err := ioutil.ReadAll(file)
-	var locations Locations
-	json.Unmarshal(b, &locations.Locations)
 
-	return &locations
-}
 func errorHandling(err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+func ShowAllLocations() (au *AllLocations) {
+	file, err := os.OpenFile("assets/locations.xml", os.O_RDWR|os.O_APPEND, 0666)
+	errorHandling(err)
+	all, err := ioutil.ReadAll(file)
+	var allLoc AllLocations
+	err = xml.Unmarshal(all, &allLoc.Location)
+	if err != nil {
+		return nil
+	}
+	return &allLoc
+}
+
+type AllLocations struct {
+	Location []*Locations
+}
+
+func RegisterLocations() []string {
+	var locations Locations
+	var path = flag.Lookup("xmlPath").Value.String()
+	xmlFile, _ := os.Open(path)
+	defer xmlFile.Close()
+	byteValue, _ := ioutil.ReadAll(xmlFile)
+	xml.Unmarshal(byteValue, &locations)
+	var loc []string
+	for i := 0; i < len(locations.Locations); i++ {
+		loc[i] = locations.Locations[i].Name
+	}
+	return loc
+
 }

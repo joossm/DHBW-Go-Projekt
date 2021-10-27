@@ -3,12 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Select Location</title>
+
 </head>
 <body>
 You bad ass motherfucker select your location!
 
-{{range .Locations}}
-    <div> Location:{{ .Location }} </div>
+{{range .Location}}
+    {{range .Locations}}
+        <br>
+        <div> Location:{{ .Name }} </div>
+        <form action="https://127.0.0.1:8444/{{ .Name }}">
+            <input type="submit" value="Go to Location:{{ .Name }}"/>
+        </form>
+        <div></div>
+    {{end}}
 {{end}}
 </body>
 </html>
