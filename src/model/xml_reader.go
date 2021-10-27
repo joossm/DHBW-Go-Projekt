@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-type Locations struct {
+type LocationsList struct {
 	XMLName   xml.Name   `xml:"locations"`
 	Locations []Location `xml:"location"`
 }
@@ -18,16 +18,16 @@ type Location struct {
 	Name    string   `xml:"name"`
 }
 
-func (this Locations) GetLocations() []Location {
+func (this LocationsList) GetLocations() []Location {
 	return this.Locations
 }
-func (this Locations) getLength() int {
+func (this LocationsList) getLength() int {
 	return len(this.Locations)
 }
-func (Location) printName() string {
-	return "To Do"
+func (this Location) printName() string {
+	return this.Name
 }
-func (this Locations) toStrings() []string {
+func (this LocationsList) ToStrings() []string {
 	locStrings := make([]string, 0)
 	for i := 0; i < len(this.Locations); i++ {
 		locStrings = append(locStrings, this.Locations[i].Name)
@@ -38,8 +38,8 @@ func main() {
 	config.Init()
 	Read()
 }
-func Read() Locations {
-	var locations Locations
+func Read() LocationsList {
+	var locations LocationsList
 	var path = flag.Lookup("xmlPath").Value.String()
 	xmlFile, _ := os.Open(path)
 	defer xmlFile.Close()
@@ -71,15 +71,15 @@ func ShowAllLocations() (au *AllLocations) {
 }
 
 type AllLocations struct {
-	Location []*Locations
+	Location []*LocationsList
 }
 
-func RegisterLocations() []string {
-	var locations Locations
+func RegisterLocations() LocationsList {
+	var locationsList LocationsList
 	var path = flag.Lookup("xmlPath").Value.String()
 	xmlFile, _ := os.Open(path)
 	defer xmlFile.Close()
 	byteValue, _ := ioutil.ReadAll(xmlFile)
-	xml.Unmarshal(byteValue, &locations)
-	return locations.toStrings()
+	xml.Unmarshal(byteValue, &locationsList)
+	return locationsList
 }
