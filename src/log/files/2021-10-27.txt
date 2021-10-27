@@ -13,3 +13,5 @@ LOGIN, Oct 27 15:25:02, Matthias Joo, Heilbronn, Neckarsulm;
 LOGIN, Oct 27 15:25:15, Matthias Joo, Heilbronn, Neckarsulm;
 LOGIN, Oct 27 15:28:13, Liam, Friedrich, Neckarsulm;
 LOGOUT, Oct 27 15:28:16, Liam, Friedrich, Neckarsulm;
+LOGIN, Oct 27 15:39:49, wqd, Friedrich, FerienInAlgerien;
+LOGOUT, Oct 27 15:39:52, wqd, Friedrich, FerienInAlgerien;
