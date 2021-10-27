@@ -12,4 +12,6 @@ LOGIN, Oct 27 09:49:02, Liam, Friedrich
 ;LOGIN, Oct 27 09:49:21, Liam, Friedrich
 ;LOGIN, Oct 27 09:50:09, Liam, Friedrich
 ;LOGOUT, Oct 27 09:50:20, , 
+;LOGIN, Oct 27 10:09:38, Simon, DDD
+;LOGOUT, Oct 27 10:09:47, Simon, DDD
 ;
