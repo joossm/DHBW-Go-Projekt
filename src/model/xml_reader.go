@@ -27,6 +27,13 @@ func (this Locations) getLength() int {
 func (Location) printName() string {
 	return "To Do"
 }
+func (this Locations) toStrings() []string {
+	locStrings := make([]string, 0)
+	for i := 0; i < len(this.Locations); i++ {
+		locStrings = append(locStrings, this.Locations[i].Name)
+	}
+	return locStrings
+}
 func main() {
 	config.Init()
 	Read()
@@ -74,10 +81,5 @@ func RegisterLocations() []string {
 	defer xmlFile.Close()
 	byteValue, _ := ioutil.ReadAll(xmlFile)
 	xml.Unmarshal(byteValue, &locations)
-	var loc []string
-	for i := 0; i < len(locations.Locations); i++ {
-		loc[i] = locations.Locations[i].Name
-	}
-	return loc
-
+	return locations.toStrings()
 }
