@@ -6,20 +6,8 @@ import (
 	"time"
 )
 
-func WriteLoginToFile(textToWrite string) {
+func WriteToFile(login bool, textToWrite string) {
 	var today = getDateInFormat()
-	var login = true
-	if doesFileExists("src/log/files/" + today + ".txt") {
-		readAndWriteAndSave(login, textToWrite, today)
-	} else {
-		createFile(today)
-		readAndWriteAndSave(login, textToWrite, today)
-	}
-}
-
-func WriteLogoutToFile(textToWrite string) {
-	var today = getDateInFormat()
-	var login = false
 	if doesFileExists("src/log/files/" + today + ".txt") {
 		readAndWriteAndSave(login, textToWrite, today)
 	} else {

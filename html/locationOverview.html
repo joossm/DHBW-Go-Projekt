@@ -2,21 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Select Location</title>
+    <title>Overview of the QR Codes for several Locations</title>
 
 </head>
 <body>
-You bad ass motherfucker select your location!
-
-{{range .Location}}
-    {{range .Locations}}
-        <br>
-        <div> Location:{{ .Name }} </div>
-        <form action="https://127.0.0.1:8444/{{ .Name }}">
-            <input type="submit" value="Go to Location:{{ .Name }}"/>
-        </form>
-        <div></div>
+<div style="text-align: center;">
+    <br><br>
+    <h1>Overview of the QR Codes for several Locations</h1>
+    <br>
+    <br><br>
+    {{range .Location}}
+        {{range .Locations}}
+            <br>
+            <div><h2>{{ .Name }}</h2></div>
+            <form action="https://127.0.0.1:8444/{{ .Name }}">
+                <input type="submit" value="QR Code of {{ .Name }}"/>
+            </form>
+            <div></div>
+        {{end}}
     {{end}}
-{{end}}
+</div>
 </body>
 </html>

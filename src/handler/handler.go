@@ -14,11 +14,13 @@ import (
 func QrCodeCreate(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		log.Println(urlBuilder(r))
-		var png []byte
-		png, err := qrcode.Encode(urlBuilder(r), qrcode.Medium, 256)
-		errorHandling(err)
-		_, err = w.Write(png)
-		errorHandling(err)
+		log.Println(getLocation(r))
+		var filename = "html/qrCodes/" + getLocation(r) + ".png"
+		_ = qrcode.WriteFile(urlBuilder(r), qrcode.Medium, 256, filename)
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		AddForm := "<head><title>QR Code " + getLocation(r) + "</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><div style=\"text-align: center;\"><br><br><br><br><br><br><br><br><h1>" + getLocation(r) + "</h1><br><br><br><br><img alt=\"+ urlBuilder(r)+\" src=\"html/qrCodes/" + getLocation(r) + ".png\"></div><body>"
+		fmt.Fprint(w, AddForm)
+		return
 	}
 }
 
@@ -35,7 +37,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		var address = informationsFromCookies("address", r)
 		var location = proofIfLoginInSameLocation(r)
 
-		report.WriteLoginToFile(combineText(name, address, location))
+		report.WriteToFile(true, combineText(name, address, location))
 
 		setCookie(w, "name", name)
 		setCookie(w, "address", address)
@@ -75,7 +77,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 			address := r.FormValue("address")
 			var location = informationsFromCookies("location", r)
 
-			report.WriteLoginToFile(combineText(name, address, location))
+			report.WriteToFile(true, combineText(name, address, location))
 
 			setCookie(w, "name", name)
 			setCookie(w, "address", address)
@@ -92,8 +94,7 @@ func LogoutUser(w http.ResponseWriter, r *http.Request) {
 		var name = informationsFromCookies("name", r)
 		var address = informationsFromCookies("address", r)
 		var location = informationsFromCookies("location", r)
-
-		report.WriteLogoutToFile(name + ", " + address + ", " + location)
+		report.WriteToFile(false, combineText(name, address, location))
 		http.Redirect(w, r, "/end", 301)
 	}
 }
@@ -172,6 +173,9 @@ func setCookie(w http.ResponseWriter, name string, value string) {
 }
 
 func urlBuilder(r *http.Request) string {
-	var input = r.URL.String()
-	return "https://127.0.0.1:8443/login?token=" + token.GetTokenByLocation(input[1:len(input)-1]) + "&location=" + (input[1 : len(input)-1])
+
+	return "https://127.0.0.1:8443/login?token=" + token.GetTokenByLocation(getLocation(r)) + "&location=" + getLocation(r)
+}
+func getLocation(r *http.Request) string {
+	return r.URL.String()[1 : len(r.URL.String())-1]
 }
