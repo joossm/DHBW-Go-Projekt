@@ -11,12 +11,10 @@ func WriteLoginToFile(textToWrite string) {
 	var login = true
 	if doesFileExists("src/log/files/" + today + ".txt") {
 		readAndWriteAndSave(login, textToWrite, today)
-
 	} else {
 		createFile(today)
 		readAndWriteAndSave(login, textToWrite, today)
 	}
-
 }
 
 func WriteLogoutToFile(textToWrite string) {
@@ -74,6 +72,7 @@ func readAndWriteAndSave(login bool, textToWrite string, today string) {
 	err = ioutil.WriteFile("src/log/files/"+today+".txt", file, 0644)
 	panicHandling(err)
 }
+
 func createFile(today string) {
 	createFile, err := os.Create("src/log/files/" + today + ".txt")
 	panicHandling(err)
