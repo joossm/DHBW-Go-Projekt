@@ -25,4 +25,7 @@ LOGIN, Oct 27 13:02:19, CluckCaptain85, Mama
 ;LOGOUT, Oct 27 13:24:15, Emil, Bartoldus, Frankfurt
 ;LOGIN, Oct 27 13:24:23, Emil, Bartoldus, Warburg
 ;LOGOUT, Oct 27 13:24:27, Emil, Bartoldus, Warburg
-;
+;LOGIN, Oct 27 13:28:19, Liam, Friedrich, Neckarsulm;
+LOGOUT, Oct 27 13:28:23, Liam, Friedrich, Neckarsulm;
+LOGIN, Oct 27 13:28:32, Liam, Friedrich, Mosbach;
+LOGOUT, Oct 27 13:28:33, Liam, Friedrich, Mosbach;

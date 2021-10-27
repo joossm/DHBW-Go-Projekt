@@ -13,7 +13,7 @@ func WriteLoginToFile(textToWrite string) {
 	}
 
 	var timestamp = time.Now().Format(time.Stamp)
-	var text = "LOGIN, " + timestamp + ", " + textToWrite + ";"
+	var text = "LOGIN, " + timestamp + ", " + textToWrite + ";\n"
 
 	file = append(file, []byte(text)...)
 
@@ -32,7 +32,7 @@ func WriteLogoutToFile(textToWrite string) {
 	}
 	var timestamp = time.Now().Format(time.Stamp)
 
-	var text = "LOGOUT, " + timestamp + ", " + textToWrite + ";"
+	var text = "LOGOUT, " + timestamp + ", " + textToWrite + ";\n"
 	file = append(file, []byte(text)...)
 
 	// write the whole body at once

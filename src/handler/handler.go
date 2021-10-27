@@ -80,7 +80,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		log.Println("Location ist:::::" + location)
 		cookieLocation := http.Cookie{Name: "location", Value: location}
 		http.SetCookie(w, &cookieLocation)
-		writer.WriteLoginToFile(name + ", " + address + ", " + location + "\n")
+		writer.WriteLoginToFile(name + ", " + address + ", " + location)
 		log.Println("Name: " + name + ", Address:" + address + ", Location:" + location)
 
 		cookieName := http.Cookie{Name: "name", Value: name}
@@ -127,7 +127,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 				fmt.Println("Found a cookie named:", cookie.Name)
 			}
 
-			writer.WriteLoginToFile(name + ", " + address + ", " + location + "\n")
+			writer.WriteLoginToFile(name + ", " + address + ", " + location)
 			log.Println("Name: " + name + ", Address:" + address + ", Location:" + location)
 
 			cookieName := http.Cookie{Name: "name", Value: name}
@@ -167,7 +167,7 @@ func LogoutUser(w http.ResponseWriter, r *http.Request) {
 
 			fmt.Println("Found a cookie named:", cookie.Name)
 		}
-		writer.WriteLogoutToFile(name + ", " + address + ", " + location + "\n")
+		writer.WriteLogoutToFile(name + ", " + address + ", " + location)
 		log.Println("Name: " + name + ", Address:" + address + ", Location:" + location)
 
 		http.Redirect(w, r, "/end", 301)

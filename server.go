@@ -6,7 +6,6 @@ import (
 	"GoProjekt/src/model/config"
 	token "GoProjekt/src/token"
 	"flag"
-	"fmt"
 	_ "github.com/skip2/go-qrcode"
 	_ "html/template"
 	"log"
@@ -17,7 +16,6 @@ import (
 
 func main() {
 	config.Init()
-	model.Read()
 	var port1 = flag.Lookup("port1").Value.String()
 	var port2 = flag.Lookup("port2").Value.String()
 	var serverMuxA = http.NewServeMux()
@@ -25,7 +23,7 @@ func main() {
 
 	locations := model.RegisterLocations().ToStrings()
 	for i := 0; i < len(locations); i++ {
-		log.Println(locations[i])
+		log.Println("Register of /" + locations[i])
 		serverMuxB.HandleFunc("/"+locations[i], handler.QrCodeCreate)
 	}
 	fileServer := http.FileServer(http.Dir("./html/"))
@@ -72,9 +70,4 @@ func main() {
 		return
 	}
 
-}
-func errorHandling(err error) {
-	if err != nil {
-		fmt.Println(err)
-	}
 }
