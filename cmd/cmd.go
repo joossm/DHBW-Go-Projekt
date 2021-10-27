@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func main() {
+func Lauft() {
 
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Please enter the day you are looking for. (Day Format: DD.MM.YYYY)")
