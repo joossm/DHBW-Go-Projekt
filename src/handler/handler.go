@@ -19,7 +19,7 @@ func QrCodeCreate(w http.ResponseWriter, r *http.Request) {
 		var filename = "html/qrCodes/" + getLocation(r) + ".png"
 		_ = qrcode.WriteFile(urlBuilder(r), qrcode.Medium, 256, filename)
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		AddForm := "<head><title>QR Code " + getLocation(r) + "</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><div style=\"text-align: center;\"><br><br><br><br><br><br><br><br><h1>" + getLocation(r) + "</h1><br><br><br><br><img alt=\"+ urlBuilder(r)+\" src=\"html/qrCodes/" + getLocation(r) + ".png\"></div><body>"
+		AddForm := "<head><title>QR Code " + getLocation(r) + "</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><div style=\"text-align: center;\"><br><br><br><br><br><br><br><br><h1>" + getLocation(r) + "</h1><br><br><br><br><img alt=\"" + urlBuilder(r) + "\" src=\"html/qrCodes/" + getLocation(r) + ".png\"></div><body>"
 		fmt.Fprint(w, AddForm)
 		return
 	}

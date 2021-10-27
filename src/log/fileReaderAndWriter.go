@@ -17,14 +17,11 @@ func WriteToFile(login bool, textToWrite string) {
 }
 
 func getDateInFormat() string {
-	var date = time.Now().Format(time.RFC3339)
-	today := date[0:10]
-	return today
+	return time.Now().Format(time.RFC3339)[0:10]
 }
 
 func getTimeStamp() string {
-	var timestamp = time.Now().Format(time.Stamp)
-	return timestamp
+	return time.Now().Format(time.Stamp)
 }
 
 func createText(login bool, textToWrite string) string {
