@@ -1,17 +1,28 @@
-LOGIN, Oct 26 19:03:19, Liam, Friedrich
-LOGIN, Oct 26 19:03:20, Liam, Friedrich
-LOGIN, Oct 26 19:57:16, Simon Berberich, Miltenberg
-LOGOUT, Oct 26 19:57:36, Simon Berberich, Miltenberg
-LOGIN, Oct 26 19:57:50, Simon Berberich, Miltenberg
-LOGIN, Oct 26 19:57:55, Simon Berberich, Miltenberg
-LOGOUT, Oct 26 19:58:11, Simon Berberich, Miltenberg
-LOGIN, Oct 26 19:58:51, Simon Berberich, Miltenberg
-LOGOUT, Oct 26 19:59:01, Simon Berberich, Miltenberg
-LOGIN, Oct 27 09:49:02, Liam, Friedrich
-;LOGOUT, Oct 27 09:49:05, Liam, Friedrich
-;LOGIN, Oct 27 09:49:21, Liam, Friedrich
-;LOGIN, Oct 27 09:50:09, Liam, Friedrich
-;LOGOUT, Oct 27 09:50:20, , 
+LOGIN, Oct 27 13:02:19, CluckCaptain85, Mama
+;LOGIN, Oct 27 13:02:19, CluckCaptain85, Mama
+;LOGIN, Oct 27 13:02:29, CluckCaptain85, Mama
+;LOGIN, Oct 27 13:03:02, CluckCaptain85, Mama
+;LOGOUT, Oct 27 13:03:13, , 
+;LOGIN, Oct 27 13:06:36, Liam, Friedrich, 
+;LOGIN, Oct 27 13:09:20, Liam, Friedrich
+;LOGIN, Oct 27 13:10:11, w, Mama, 
+;LOGIN, Oct 27 13:13:03, CluckCaptain85, Mama, Mosbach
+;LOGOUT, Oct 27 13:14:47, CluckCaptain85, Mama
+;LOGIN, Oct 27 13:14:50, CluckCaptain85, Mama
+;LOGIN, Oct 27 13:18:52, CluckCaptain85, Mama, Neckarsulm
+;LOGOUT, Oct 27 13:18:55, CluckCaptain85, Mama
+;LOGIN, Oct 27 13:19:05, CluckCaptain85, Mama, Mosbach
+;LOGOUT, Oct 27 13:19:10, CluckCaptain85, Mama
+;LOGIN, Oct 27 13:21:28, Liam, Friedrich, Frankfurt
+;LOGOUT, Oct 27 13:21:35, Liam, Friedrich, Frankfurt
+;LOGIN, Oct 27 13:21:45, Liam, Friedrich, Mosbach
+;LOGOUT, Oct 27 13:21:48, Liam, Friedrich, Mosbach
 ;LOGIN, Oct 27 10:09:38, Simon, DDD
 ;LOGOUT, Oct 27 10:09:47, Simon, DDD
+;LOGIN, Oct 27 13:23:14, Liam, Friedrich, 
+;LOGOUT, Oct 27 13:23:21, Liam, Friedrich, 
+;LOGIN, Oct 27 13:24:10, Emil, Bartoldus, Frankfurt
+;LOGOUT, Oct 27 13:24:15, Emil, Bartoldus, Frankfurt
+;LOGIN, Oct 27 13:24:23, Emil, Bartoldus, Warburg
+;LOGOUT, Oct 27 13:24:27, Emil, Bartoldus, Warburg
 ;

@@ -26,7 +26,7 @@ func main() {
 	locations := model.RegisterLocations().ToStrings()
 	for i := 0; i < len(locations); i++ {
 		log.Println(locations[i])
-		serverMuxA.HandleFunc("/"+locations[i], handler.QrCodeCreate)
+		serverMuxB.HandleFunc("/"+locations[i], handler.QrCodeCreate)
 	}
 	fileServer := http.FileServer(http.Dir("./html/"))
 	serverMuxA.Handle("/html/", http.StripPrefix("/html", fileServer))

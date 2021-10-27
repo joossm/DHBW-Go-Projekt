@@ -17,19 +17,26 @@ import (
 func QrCodeCreate(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		log.Println(r.URL.Query().Get("location"))
-		t, err := template.ParseFiles("html/qrPage.html")
+		log.Println(r.URL)
+		var input string = string(r.URL.String())
+		var site string = input[1 : len(input)-1]
+		log.Println(site)
+
+		/*t, err := template.ParseFiles("html/qrPage.html")
 		errorHandling(err)
 		err = t.Execute(w, nil)
-		errorHandling(err)
-	} else {
+		errorHandling(err)*/
 
 		log.Println(r.URL.Query().Get("location"))
-		var websiteUrl = "https://127.0.0.1:8444/qrsite"
-		var websiteParameter = "?token="
-		var websiteToken = token.GetActiveToken()
-		var completeUrl = websiteUrl + websiteParameter + websiteToken
+		var websiteUrl = "https://127.0.0.1:8443/login?token="
 
+		var websiteParameterLocation = "&location="
+		var websiteToken = token.GetActiveToken()
+		var websiteLocation = site
+		var completeUrl = websiteUrl + websiteToken + websiteParameterLocation + websiteLocation
+		log.Println(completeUrl)
 		var png []byte
+
 		png, err := qrcode.Encode(completeUrl, qrcode.Medium, 256)
 		errorHandling(err)
 		w.Write(png)
@@ -69,8 +76,12 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 			fmt.Println("Found a cookie named:", cookie.Name)
 		}
-		writer.WriteLoginToFile((name + ", " + address + "\n"))
-		log.Println("Name: " + name + ", Address:" + address)
+		location := r.URL.Query().Get("location")
+		log.Println("Location ist:::::" + location)
+		cookieLocation := http.Cookie{Name: "location", Value: location}
+		http.SetCookie(w, &cookieLocation)
+		writer.WriteLoginToFile(name + ", " + address + ", " + location + "\n")
+		log.Println("Name: " + name + ", Address:" + address + ", Location:" + location)
 
 		cookieName := http.Cookie{Name: "name", Value: name}
 		cookieAddress := http.Cookie{Name: "address", Value: address}
@@ -85,6 +96,10 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 			if r.URL.Query().Get("token") != "" {
 				if token.ValidateToken(r.URL.Query().Get("token")) == "true" {
 					log.Println("Token Valid")
+					location := r.URL.Query().Get("location")
+					log.Println("Location ist:::::" + location)
+					cookieLocation := http.Cookie{Name: "location", Value: location}
+					http.SetCookie(w, &cookieLocation)
 					t, err := template.ParseFiles("html/loginPage.html")
 					errorHandling(err)
 					err = t.Execute(w, nil)
@@ -102,8 +117,18 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 			name := r.FormValue("name")
 			address := r.FormValue("address")
-			writer.WriteLoginToFile((name + ", " + address + "\n"))
-			log.Println("Name: " + name + ", Address:" + address)
+			var location string
+			log.Println(r.URL)
+			for _, cookie := range r.Cookies() {
+				if cookie.Name == "location" {
+					location = cookie.Value
+				}
+
+				fmt.Println("Found a cookie named:", cookie.Name)
+			}
+
+			writer.WriteLoginToFile(name + ", " + address + ", " + location + "\n")
+			log.Println("Name: " + name + ", Address:" + address + ", Location:" + location)
 
 			cookieName := http.Cookie{Name: "name", Value: name}
 			cookieAddress := http.Cookie{Name: "address", Value: address}
@@ -128,6 +153,7 @@ func LogoutUser(w http.ResponseWriter, r *http.Request) {
 	} else {
 		var name string
 		var address string
+		var location string
 		for _, cookie := range r.Cookies() {
 			if cookie.Name == "name" {
 				name = cookie.Value
@@ -135,11 +161,14 @@ func LogoutUser(w http.ResponseWriter, r *http.Request) {
 			if cookie.Name == "address" {
 				address = cookie.Value
 			}
+			if cookie.Name == "location" {
+				location = cookie.Value
+			}
 
 			fmt.Println("Found a cookie named:", cookie.Name)
 		}
-		writer.WriteLogoutToFile((name + ", " + address + "\n"))
-		log.Println("Name: " + name + ", Address:" + address)
+		writer.WriteLogoutToFile(name + ", " + address + ", " + location + "\n")
+		log.Println("Name: " + name + ", Address:" + address + ", Location:" + location)
 
 		http.Redirect(w, r, "/end", 301)
 
