@@ -15,6 +15,9 @@ import (
 )
 
 func main() {
+
+	//cmd.Lauft()
+
 	config.Init()
 	var port1 = flag.Lookup("port1").Value.String()
 	var port2 = flag.Lookup("port2").Value.String()
@@ -26,6 +29,7 @@ func main() {
 		log.Println("Register of /" + locations[i])
 		serverMuxB.HandleFunc("/"+locations[i], handler.QrCodeCreate)
 	}
+
 	fileServer := http.FileServer(http.Dir("./html/"))
 	serverMuxA.Handle("/html/", http.StripPrefix("/html", fileServer))
 	serverMuxB.Handle("/html/", http.StripPrefix("/html", fileServer))
@@ -37,22 +41,28 @@ func main() {
 	serverMuxA.HandleFunc("/location", handler.SelectLocation)
 	serverMuxB.HandleFunc("/qr", handler.QrCodeCreate)
 	go func() {
-		var websiteToken string
-		websiteToken = token.CreateAndUpdateToken()
+		token.CreateAndUpdateTokenMap(locations)
+		println(token.GetTokenByLocation(locations[0]))
+		println(token.GetTokenByLocation(locations[1]))
+		println(token.GetTokenByLocation(locations[2]))
+		println(token.GetTokenByLocation(locations[3]))
+		println(token.GetTokenByLocation(locations[4]))
+		//var websiteToken string
+		/*websiteToken = token.CreateAndUpdateToken()
 		if token.ValidateToken(websiteToken) == "true" {
 			log.Println("Token successful Updated " + websiteToken)
 		} else {
 			log.Println("Token Updated not successful")
-		}
+		}*/
 		for now := range time.Tick(5 * time.Minute) {
 			log.Println(now, "Token Update started")
-
-			websiteToken = token.CreateAndUpdateToken()
-			if token.ValidateToken(websiteToken) == "true" {
+			token.CreateAndUpdateTokenMap(locations)
+			//websiteToken = token.CreateAndUpdateToken()
+			/*if token.ValidateToken(websiteToken) == "true" {
 				log.Println(now, "Token successful Updated")
 			} else {
 				log.Println(now, "Token Updated not successful")
-			}
+			}*/
 		}
 	}()
 

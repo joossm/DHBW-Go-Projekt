@@ -31,7 +31,7 @@ func QrCodeCreate(w http.ResponseWriter, r *http.Request) {
 		var websiteUrl = "https://127.0.0.1:8443/login?token="
 
 		var websiteParameterLocation = "&location="
-		var websiteToken = token.GetActiveToken()
+		var websiteToken = token.GetTokenByLocation(site)
 		var websiteLocation = site
 		var completeUrl = websiteUrl + websiteToken + websiteParameterLocation + websiteLocation
 		log.Println(completeUrl)
@@ -94,7 +94,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
 			log.Println(r.URL.Query().Get("token"))
 			if r.URL.Query().Get("token") != "" {
-				if token.ValidateToken(r.URL.Query().Get("token")) == "true" {
+				if token.ValidateTokenByLocation(r.URL.Query().Get("token"), r.URL.Query().Get("location")) == "true" {
 					log.Println("Token Valid")
 					location := r.URL.Query().Get("location")
 					log.Println("Location ist:::::" + location)

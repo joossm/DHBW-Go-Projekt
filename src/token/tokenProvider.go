@@ -50,3 +50,20 @@ func ValidateToken(token string) string {
 func GetActiveToken() string {
 	return m[0]
 }
+func CreateAndUpdateTokenMap(loc []string) {
+
+	for i := 0; i < len(loc); i++ {
+		newTokenMap[loc[i]] = CreateAndUpdateToken()
+	}
+
+}
+func GetTokenByLocation(loc string) string {
+	return newTokenMap[loc]
+}
+func ValidateTokenByLocation(token string, location string) string {
+	if newTokenMap[location] == token {
+		return "true"
+	} else {
+		return "false"
+	}
+}
