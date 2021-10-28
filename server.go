@@ -18,8 +18,10 @@ func main() {
 	//cmd.Lauft()
 	var port1 = flag.Lookup("port1").Value.String()
 	var port2 = flag.Lookup("port2").Value.String()
+
 	var serverMuxA = http.NewServeMux()
 	var serverMuxB = http.NewServeMux()
+
 	locations := model.ReadXmlFile(config.GetPath()).ToStrings()
 	for i := 0; i < len(locations); i++ {
 		log.Println("Register of /" + locations[i])
@@ -27,17 +29,19 @@ func main() {
 	}
 
 	fileServer := http.FileServer(http.Dir("./html/"))
+
 	serverMuxA.Handle("/html/", http.StripPrefix("/html", fileServer))
-	serverMuxB.Handle("/html/", http.StripPrefix("/html", fileServer))
 	serverMuxA.HandleFunc("/end", handler.End)
 	serverMuxA.HandleFunc("/login", handler.LoginUser)
 	serverMuxA.HandleFunc("/logout", handler.LogoutUser)
 	serverMuxA.HandleFunc("/location", handler.SelectLocation)
-	serverMuxB.HandleFunc("/qr", handler.QrCodeCreate)
+
+	serverMuxB.Handle("/html/", http.StripPrefix("/html", fileServer))
+	//serverMuxB.HandleFunc("/qr", handler.QrCodeCreate)
 	go func() {
 		token.CreateAndUpdateTokenMap(locations)
 
-		for now := range time.Tick(5 * time.Minute) {
+		for now := range time.Tick(time.Minute * 5) {
 			token.CreateAndUpdateTokenMap(locations)
 			log.Println(now, "Token Updated")
 		}

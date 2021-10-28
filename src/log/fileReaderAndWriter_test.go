@@ -27,8 +27,10 @@ func TestDoesFileExists(t *testing.T) {
 	assert.Equal(t, false, doesFileExists("../../party.go"))
 }
 func TestReadAndWriteAndSave(t *testing.T) {
+	readAndWriteAndSave(true, "", "")
 
 }
 func TestCreateFile(t *testing.T) {
-
+	createFile("fileTest")
+	assert.FileExists(t, "src/log/files/fileTest.txt")
 }

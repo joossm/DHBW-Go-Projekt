@@ -35,7 +35,7 @@ func parseAndExecuteWebsite(filename string, w http.ResponseWriter, data interfa
 
 func validateInput(w http.ResponseWriter, r *http.Request, forms ...string) (erg bool, str string) {
 	for _, form := range forms {
-		matchString, _ := regexp.MatchString("^[a-z 0-9]+$", r.FormValue(form))
+		matchString, _ := regexp.MatchString("^[a-z 0-9-]+$", r.FormValue(form))
 		if matchString == false {
 			return false, "Please use only upper and lower case letters for full name and address. Thank you."
 		}
