@@ -33,12 +33,21 @@ func parseAndExecuteWebsite(filename string, w http.ResponseWriter, data interfa
 	err = t.Execute(w, data)
 	errorHandling(err)
 }
-
-func validateInput(w http.ResponseWriter, r *http.Request, forms ...string) (erg bool, str string) {
+func validateInputZipAndHouseNumber(w http.ResponseWriter, r *http.Request, forms ...string) (erg bool, str string) {
 	for _, form := range forms {
-		matchString, _ := regexp.MatchString("^[A-Za-z0-9 -]+$", r.FormValue(form))
+		matchString, _ := regexp.MatchString("^[0-9]+$", r.FormValue(form))
 		if matchString == false {
 			return false, "Please use only upper and lower case letters for full name and address. Thank you."
+		}
+
+	}
+	return true, ""
+}
+func validateInput(w http.ResponseWriter, r *http.Request, forms ...string) (erg bool, str string) {
+	for _, form := range forms {
+		matchString, _ := regexp.MatchString("[a-zA-z- ]+", r.FormValue(form))
+		if matchString == false {
+			return false, "Please use only upper and lower case letters for full name and address. Thank you." + form
 		}
 
 	}
@@ -86,14 +95,15 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 			}
 
 		} else {
-			resBool, errStr := validateInput(w, r, "name", "address")
+			resBool, errStr := validateInputZipAndHouseNumber(w, r, "zipCode", "houseNumber")
+			resBool, errStr = validateInput(w, r, "firstName", "lastName", "cityName", "streetName")
 			if resBool == false {
 				parseAndExecuteWebsite(flag.Lookup("wrongInputPath").Value.String(), w, errStr)
 
 				return
 			}
-			name := r.FormValue("name")
-			address := r.FormValue("address")
+			name := r.FormValue("firstName") + " " + r.FormValue("lastName")
+			address := r.FormValue("zipCode") + " " + r.FormValue("cityName") + " " + r.FormValue("streetName") + " " + r.FormValue("houseNumber")
 			var location = informationsFromCookies("location", r)
 
 			report.WriteToFile(true, combineText(name, address, location))
