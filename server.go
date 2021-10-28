@@ -40,8 +40,7 @@ func main() {
 	//serverMuxB.HandleFunc("/qr", handler.QrCodeCreate)
 	go func() {
 		token.CreateAndUpdateTokenMap(locations)
-
-		for now := range time.Tick(time.Minute * 5) {
+		for now := range time.Tick(config.GetTokenDuration()) {
 			token.CreateAndUpdateTokenMap(locations)
 			log.Println(now, "Token Updated")
 		}
