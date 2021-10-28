@@ -30,10 +30,10 @@ func GetTokenByLocation(loc string) string {
 	return newTokenMap[loc]
 }
 
-func ValidateTokenByLocation(token string, location string) string {
+func ValidateTokenByLocation(token string, location string) bool {
 	if newTokenMap[location] == token || oldTokenMap[location] == token {
-		return "true"
+		return true
 	} else {
-		return "false"
+		return false
 	}
 }

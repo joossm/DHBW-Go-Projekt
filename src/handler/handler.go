@@ -64,7 +64,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 				var tokenParameter = r.URL.Query().Get("token")
 				var locationParameter = r.URL.Query().Get("location")
 
-				if token.ValidateTokenByLocation(tokenParameter, locationParameter) == "true" {
+				if token.ValidateTokenByLocation(tokenParameter, locationParameter) == true {
 
 					log.Println("Token Valid")
 					setCookie(w, "location", r.URL.Query().Get("location"))
