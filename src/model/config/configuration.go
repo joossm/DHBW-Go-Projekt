@@ -18,6 +18,8 @@ func SetFlags(pPort1 string,pPort2 string, pTokenDur string, pXmlPath string,){
 	flag.StringVar(&port2, "port2", pPort2, "4-digit number for the login Page")
 	flag.StringVar(&tokenDuration, "tokenDuration", pTokenDur, "The life duration of the token")
 	flag.StringVar(&xmlPath, "xmlPath", pXmlPath, "Path to the xmlFile storing the locations")
-	flag.Parse()
 
+}
+func GetPath() string {
+	return xmlPath
 }

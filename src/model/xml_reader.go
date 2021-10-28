@@ -1,6 +1,7 @@
 package model
 
 import (
+	"GoProjekt/src/model/config"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
@@ -8,6 +9,7 @@ import (
 )
 
 var locationsList = LocationsList{}
+
 type LocationsList struct {
 	XMLName   xml.Name   `xml:"locations"`
 	Locations []*Location `xml:"location"`
@@ -19,8 +21,24 @@ type Location struct {
 type AllLocations struct {
 	Location []*Location
 }
+func GetList() LocationsList{
+	return locationsList
+}
 
-
+func (this LocationsList) equals(list LocationsList) bool{
+	lenA := len(this.Locations)
+	lenB := len(list.Locations)
+	if lenA != lenB{
+		return false
+	}else{
+	for i:=0;i<lenA;i++{
+		if this.Locations[i]!=list.Locations[i]{
+			return false
+		}
+	}
+		return true
+	}
+}
 func (this LocationsList) getLength() int {
 	return len(this.Locations)
 }
@@ -51,13 +69,14 @@ func ShowAllLocations() (au *AllLocations) {
 */
 
 
-func ShowAllLoc() []*Location{
-	return locationsList.Locations
+func (this LocationsList)ShowAllLoc() []*Location{
+	return this.Locations
+}
+func init(){
+	config.Init()
 }
 
-
-func RegisterLocations(path string) LocationsList {
-	fmt.Println(path)
+func ReadXmlFile(path string) LocationsList {
 	xmlFile, err := os.OpenFile(path,os.O_RDWR|os.O_APPEND, 0666)
 	errorHandling(err)
 	defer xmlFile.Close()

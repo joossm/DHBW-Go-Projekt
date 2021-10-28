@@ -16,14 +16,11 @@ import (
 
 func main() {
 	//cmd.Lauft()
-
-	config.Init()
 	var port1 = flag.Lookup("port1").Value.String()
 	var port2 = flag.Lookup("port2").Value.String()
 	var serverMuxA = http.NewServeMux()
 	var serverMuxB = http.NewServeMux()
-
-	locations := model.RegisterLocations(flag.Lookup("xmlPath").Value.String()).ToStrings()
+	locations := model.ReadXmlFile(config.GetPath()).ToStrings()
 	for i := 0; i < len(locations); i++ {
 		log.Println("Register of /" + locations[i])
 		serverMuxB.HandleFunc("/"+locations[i], handler.QrCodeCreate)
