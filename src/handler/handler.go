@@ -126,7 +126,7 @@ func End(w http.ResponseWriter, r *http.Request) {
 
 func SelectLocation(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		locations := model.ShowAllLocations()
+		locations := model.ShowAllLoc()
 		parseAndExecuteWebsite("html/locationOverview.html", w, locations)
 	} else {
 		http.Redirect(w, r, "/location", 301)

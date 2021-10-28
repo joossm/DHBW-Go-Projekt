@@ -13,8 +13,8 @@ var list = createTestLocations()
 
 func createTestLocations() LocationsList{
 	list := LocationsList{}
-	list.Locations = append(list.Locations, loc1)
-	list.Locations = append(list.Locations, loc2)
+	list.Locations = append(list.Locations, &loc1)
+	list.Locations = append(list.Locations, &loc2)
 	return list
 }
 
@@ -22,6 +22,7 @@ func TestRegisterLocations(t *testing.T) {
 	config.Init()
 	loc := RegisterLocations("../../assets/locations.xml")
 	assert.Equal(t, loc.getLength()>0, true)
+	assert.Equal(t, loc.Locations[3].Name == loc1.Name,true)
 		for i := 0; i < len(loc.Locations); i++ {
 			assert.Equal(t, loc.Locations[i].Name != "", true)
 		}
@@ -33,6 +34,17 @@ func TestLocationsList_ToStrings(t *testing.T) {
 	assert.Equal(t, list.ToStrings()[0]==list.Locations[0].Name,true)
 	assert.Equal(t, list.ToStrings()[1]==list.Locations[1].Name,true)
 }
+
+//TODO AllLocations
+
+
+//TODO errorHandling
+
+func TestShowAllLocations(t *testing.T) {
+
+}
+
+//TODO ShowAllLocations
 
 
 func TestListContains(t *testing.T){
