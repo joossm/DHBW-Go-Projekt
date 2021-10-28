@@ -36,16 +36,16 @@ func init() {
 	SetFlagsForLinks("/", "/login", "/logout", "/location", "/end", "/html/")
 }
 
-func Init() {
-}
+//TODO change Paths for Tests
+/*
 func InitForTest() {
 	SetPrimaryFlags("8443", "8444", 5*time.Minute)
-	//TODO change Paths for Tests
 	SetFlagsForPaths("src/log/files/", "html/logoutPage.html", "html/loginPage.html",
 		"html/endPage.html", "html/locationOverview.html", "html/wrongInput.html",
 		"server.crt", "server.key", "./html/", "html/qrCodes/", "assets/locations.xml")
 	SetFlagsForLinks("/", "/login", "/logout", "/location", "/end", "/html/")
 }
+*/
 func SetPrimaryFlags(pPort1 string, pPort2 string, pTokenDur time.Duration) {
 	flag.StringVar(&port1, "port1", pPort1, "4-digit number for the port regarding the qrCodeScan")
 	flag.StringVar(&port2, "port2", pPort2, "4-digit number for the login Page")

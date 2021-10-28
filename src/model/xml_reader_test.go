@@ -34,23 +34,17 @@ func TestLocationsList_equals(t *testing.T) {
 
 func TestLocationsList_GetLength(t *testing.T) {
 	assert.Equal(t,list.getLength()==2 ,true)
-
 }
+
 func TestLocationsList_ToStrings(t *testing.T) {
 	assert.Equal(t, list.ToStrings()[0]==list.Locations[0].Name,true)
 	assert.Equal(t, list.ToStrings()[1]==list.Locations[1].Name,true)
 }
 
-
 func TestShowAllLocations(t *testing.T) {
 	assert.Equal(t, list.ShowAllLoc()[0].Name == loc1.Name,true)
 	assert.Equal(t, list.ShowAllLoc()[1].Name == loc2.Name,true)
-
 }
-
-
-
-//TODO ShowAllLocations
 
 func TestLocationsList_ShowAllLoc(t *testing.T) {
 	assert.True(t, list.Locations[0]==list.ShowAllLoc()[0])
@@ -58,9 +52,6 @@ func TestLocationsList_ShowAllLoc(t *testing.T) {
 	assert.False(t, list.Locations[1]==list.ShowAllLoc()[0])
 }
 
-func TestListContains(t *testing.T){
-
-}
 func TestRead(t *testing.T) {
 	loc := ReadXmlFile("../../assets/locations.xml")
 	assert.True(t, loc.getLength()>0)

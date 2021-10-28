@@ -9,7 +9,6 @@ import (
 )
 
 func TestInit(t *testing.T) {
-	Init()
 	if port1 != "8443" {
 		t.Error("port 1 is ", port1, "but it should be :8443")
 	}
@@ -85,4 +84,22 @@ func TestLinkFlagsReachable(t *testing.T) {
 	assert.Equal(t, locationUrl, flag.Lookup("locationUrl").Value.String(), true)
 	assert.Equal(t, endUrl, flag.Lookup("endUrl").Value.String(), true)
 	assert.Equal(t, fileServerUrl, flag.Lookup("fileServerUrl").Value.String(), true)
+}
+
+func TestInitByMatthias(t *testing.T) {
+	assert.False(t, flag.Lookup("endPagePath").Value.String()=="../../html/endPage.html")
+	assert.False(t, flag.Lookup("loginPagePath").Value.String()=="../../html/loginPage.html")
+	assert.False(t, flag.Lookup("logoutPagePath").Value.String()=="../../html/logoutPage.html")
+	InitByMatthias()
+	assert.True(t, flag.Lookup("endPagePath").Value.String()=="../../html/endPage.html")
+	assert.True(t, flag.Lookup("loginPagePath").Value.String()=="../../html/loginPage.html")
+	assert.True(t, flag.Lookup("logoutPagePath").Value.String()=="../../html/logoutPage.html")
+
+}
+
+func TestGetPath(t *testing.T) {
+	assert.True(t, flag.Lookup("xmlPath").Value.String()==GetPath())
+}
+func TestGetTokenDuration(t *testing.T) {
+	assert.True(t, flag.Lookup("tokenDuration").Value.String()==GetTokenDuration().String())
 }
