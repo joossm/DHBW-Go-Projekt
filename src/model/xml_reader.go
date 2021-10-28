@@ -32,7 +32,7 @@ func (this LocationsList) equals(list LocationsList) bool{
 		return false
 	}else{
 	for i:=0;i<lenA;i++{
-		if this.Locations[i]!=list.Locations[i]{
+		if this.Locations[i].Name!=list.Locations[i].Name{
 			return false
 		}
 	}
