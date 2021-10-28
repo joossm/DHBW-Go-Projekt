@@ -96,5 +96,8 @@ func InitByMatthias() {
 	if err != nil {
 		return
 	}
-
+	err = flag.Set("logfilePath", "../../src/log/files/")
+	if err != nil {
+		return
+	}
 }
