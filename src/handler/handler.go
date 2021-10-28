@@ -4,6 +4,7 @@ import (
 	report "GoProjekt/src/log"
 	"GoProjekt/src/model"
 	"GoProjekt/src/token"
+	"flag"
 	"fmt"
 	"github.com/skip2/go-qrcode"
 	"html/template"
@@ -17,7 +18,7 @@ func QrCodeCreate(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		log.Println(urlBuilder(r))
 		log.Println(getLocation(r))
-		var filename = "html/qrCodes/" + getLocation(r) + ".png"
+		var filename = flag.Lookup("qrCodePath").Value.String() + getLocation(r) + ".png"
 		_ = qrcode.WriteFile(urlBuilder(r), qrcode.Medium, 256, filename)
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		AddForm := "<head><title>QR Code " + getLocation(r) + "</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><div style=\"text-align: center;\"><br><br><br><br><br><br><br><br><h1>" + getLocation(r) + "</h1><br><br><br><br><img alt=\"" + urlBuilder(r) + "\" src=\"html/qrCodes/" + getLocation(r) + ".png\"></div><body>"
@@ -35,7 +36,7 @@ func parseAndExecuteWebsite(filename string, w http.ResponseWriter, data interfa
 
 func validateInput(w http.ResponseWriter, r *http.Request, forms ...string) (erg bool, str string) {
 	for _, form := range forms {
-		matchString, _ := regexp.MatchString("^[a-z 0-9-]+$", r.FormValue(form))
+		matchString, _ := regexp.MatchString("^[A-Za-z0-9 -]+$", r.FormValue(form))
 		if matchString == false {
 			return false, "Please use only upper and lower case letters for full name and address. Thank you."
 		}
@@ -55,7 +56,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		setCookie(w, "address", address)
 		setCookie(w, "location", location)
 
-		http.Redirect(w, r, "/logout", 301)
+		http.Redirect(w, r, flag.Lookup("logoutUrl").Value.String(), 301)
 	} else {
 
 		if r.Method == "GET" {
@@ -70,24 +71,24 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 					log.Println("Token Valid")
 					setCookie(w, "location", r.URL.Query().Get("location"))
 
-					parseAndExecuteWebsite("html/loginPage.html", w, nil)
+					parseAndExecuteWebsite(flag.Lookup("loginPagePath").Value.String(), w, nil)
 
 				} else {
 
 					log.Println("Token Invalid")
-					http.Redirect(w, r, "/", 403)
+					http.Redirect(w, r, flag.Lookup("standardUrl").Value.String(), 403)
 				}
 
 			} else {
 
 				log.Println("No Token")
-				http.Redirect(w, r, "/", 403)
+				http.Redirect(w, r, flag.Lookup("standardUrl").Value.String(), 403)
 			}
 
 		} else {
 			resBool, errStr := validateInput(w, r, "name", "address")
 			if resBool == false {
-				parseAndExecuteWebsite("html/wrongInput.html", w, errStr)
+				parseAndExecuteWebsite(flag.Lookup("wrongInputPath").Value.String(), w, errStr)
 
 				return
 			}
@@ -100,37 +101,37 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 			setCookie(w, "name", name)
 			setCookie(w, "address", address)
 
-			http.Redirect(w, r, "/logout", 301)
+			http.Redirect(w, r, flag.Lookup("logoutUrl").Value.String(), 301)
 		}
 	}
 }
 
 func LogoutUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		parseAndExecuteWebsite("html/logoutPage.html", w, nil)
+		parseAndExecuteWebsite(flag.Lookup("logoutPagePath").Value.String(), w, nil)
 	} else {
 		var name = informationsFromCookies("name", r)
 		var address = informationsFromCookies("address", r)
 		var location = informationsFromCookies("location", r)
 		report.WriteToFile(false, combineText(name, address, location))
-		http.Redirect(w, r, "/end", 301)
+		http.Redirect(w, r, flag.Lookup("endUrl").Value.String(), 301)
 	}
 }
 
 func End(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		parseAndExecuteWebsite("html/endPage.html", w, nil)
+		parseAndExecuteWebsite(flag.Lookup("endPagePath").Value.String(), w, nil)
 	} else {
-		http.Redirect(w, r, "/end", 301)
+		http.Redirect(w, r, flag.Lookup("endUrl").Value.String(), 301)
 	}
 }
 
 func SelectLocation(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		locations := model.GetList().ShowAllLoc()
-		parseAndExecuteWebsite("html/locationOverview.html", w, locations)
+		parseAndExecuteWebsite(flag.Lookup("locationOverviewPath").Value.String(), w, locations)
 	} else {
-		http.Redirect(w, r, "/location", 301)
+		http.Redirect(w, r, flag.Lookup("locationUrl").Value.String(), 301)
 	}
 }
 

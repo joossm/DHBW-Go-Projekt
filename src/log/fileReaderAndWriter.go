@@ -1,6 +1,7 @@
 package log
 
 import (
+	"flag"
 	"io/ioutil"
 	"os"
 	"time"
@@ -8,7 +9,7 @@ import (
 
 func WriteToFile(login bool, textToWrite string) {
 	var today = getDateInFormat()
-	if doesFileExists("src/log/files/" + today + ".txt") {
+	if doesFileExists(flag.Lookup("logfilePath").Value.String() + today + ".txt") {
 		readAndWriteAndSave(login, textToWrite, today)
 	} else {
 		createFile(today)
@@ -49,17 +50,17 @@ func doesFileExists(f string) bool {
 }
 
 func readAndWriteAndSave(login bool, textToWrite string, today string) {
-	file, err := ioutil.ReadFile("src/log/files/" + today + ".txt")
+	file, err := ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + today + ".txt")
 	panicHandling(err)
 
 	file = append(file, []byte(createText(login, textToWrite))...)
 
-	err = ioutil.WriteFile("src/log/files/"+today+".txt", file, 0644)
+	err = ioutil.WriteFile(flag.Lookup("logfilePath").Value.String()+today+".txt", file, 0644)
 	panicHandling(err)
 }
 
 func createFile(today string) {
-	createFile, err := os.Create("src/log/files/" + today + ".txt")
+	createFile, err := os.Create(flag.Lookup("logfilePath").Value.String() + today + ".txt")
 	panicHandling(err)
 
 	err = createFile.Close()

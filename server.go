@@ -16,9 +16,6 @@ import (
 
 func main() {
 	//cmd.Lauft()
-	var port1 = flag.Lookup("port1").Value.String()
-	var port2 = flag.Lookup("port2").Value.String()
-
 	var serverMuxA = http.NewServeMux()
 	var serverMuxB = http.NewServeMux()
 
@@ -28,13 +25,13 @@ func main() {
 		serverMuxB.HandleFunc("/"+locations[i], handler.QrCodeCreate)
 	}
 
-	fileServer := http.FileServer(http.Dir("./html/"))
+	fileServer := http.FileServer(http.Dir(flag.Lookup("fileServerPath").Value.String()))
 
-	serverMuxA.Handle("/html/", http.StripPrefix("/html", fileServer))
-	serverMuxA.HandleFunc("/end", handler.End)
-	serverMuxA.HandleFunc("/login", handler.LoginUser)
-	serverMuxA.HandleFunc("/logout", handler.LogoutUser)
-	serverMuxA.HandleFunc("/location", handler.SelectLocation)
+	serverMuxA.Handle(flag.Lookup("fileServerUrl").Value.String(), http.StripPrefix("/html", fileServer))
+	serverMuxA.HandleFunc(flag.Lookup("endUrl").Value.String(), handler.End)
+	serverMuxA.HandleFunc(flag.Lookup("loginUrl").Value.String(), handler.LoginUser)
+	serverMuxA.HandleFunc(flag.Lookup("logoutUrl").Value.String(), handler.LogoutUser)
+	serverMuxA.HandleFunc(flag.Lookup("locationUrl").Value.String(), handler.SelectLocation)
 
 	serverMuxB.Handle("/html/", http.StripPrefix("/html", fileServer))
 	//serverMuxB.HandleFunc("/qr", handler.QrCodeCreate)
@@ -48,14 +45,16 @@ func main() {
 
 	go func() {
 		log.Printf("About to listen on 8443. Go to https://127.0.0.1:8443/location")
-		err := http.ListenAndServeTLS(":"+port1, "server.crt", "server.key", serverMuxA)
+		err := http.ListenAndServeTLS(":"+flag.Lookup("port1").Value.String(),
+			"server.crt", "server.key", serverMuxA)
 		if err != nil {
 			return
 		} // port1 added needs to be tested
 	}()
 
-	log.Printf("About to listen on 8444. Go to https://127.0.0.1:8444/Mosbach")
-	err := http.ListenAndServeTLS(":"+port2, "server.crt", "server.key", serverMuxB)
+	log.Printf("About to listen on 8444.")
+	err := http.ListenAndServeTLS(":"+flag.Lookup("port2").Value.String(),
+		"server.crt", "server.key", serverMuxB)
 	if err != nil {
 		return
 	}
