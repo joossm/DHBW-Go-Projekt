@@ -17,14 +17,8 @@ type Location struct {
 	Name    string   `xml:"name"`
 }
 
-func (this LocationsList) GetLocations() []Location {
-	return this.Locations
-}
 func (this LocationsList) getLength() int {
 	return len(this.Locations)
-}
-func (this Location) printName() string {
-	return this.Name
 }
 func (this LocationsList) ToStrings() []string {
 	locStrings := make([]string, 0)
@@ -40,7 +34,7 @@ func errorHandling(err error) {
 }
 
 func ShowAllLocations() (au *AllLocations) {
-	file, err := os.OpenFile("assets/locations.xml", os.O_RDWR|os.O_APPEND, 0666)
+	file, err := os.OpenFile(flag.Lookup("xmlPath").Value.String(), os.O_RDWR|os.O_APPEND, 0666)
 	errorHandling(err)
 	all, err := ioutil.ReadAll(file)
 	var allLoc AllLocations
@@ -55,9 +49,8 @@ type AllLocations struct {
 	Location []*LocationsList
 }
 
-func RegisterLocations() LocationsList {
+func RegisterLocations(path string) LocationsList {
 	var locationsList LocationsList
-	var path = flag.Lookup("xmlPath").Value.String()
 	fmt.Println(path)
 	xmlFile, _ := os.Open(path)
 	defer xmlFile.Close()

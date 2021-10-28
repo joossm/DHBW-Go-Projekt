@@ -23,7 +23,7 @@ func main() {
 	var serverMuxA = http.NewServeMux()
 	var serverMuxB = http.NewServeMux()
 
-	locations := model.RegisterLocations().ToStrings()
+	locations := model.RegisterLocations(flag.Lookup("xmlPath").Value.String()).ToStrings()
 	for i := 0; i < len(locations); i++ {
 		log.Println("Register of /" + locations[i])
 		serverMuxB.HandleFunc("/"+locations[i], handler.QrCodeCreate)
