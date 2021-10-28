@@ -28,7 +28,7 @@ var fileServerPath string
 var qrCodePath string
 
 //Other Paths
-func init(){
+func init() {
 	SetPrimaryFlags("8443", "8444", 5*time.Minute)
 	SetFlagsForPaths("src/log/files/", "html/logoutPage.html", "html/loginPage.html",
 		"html/endPage.html", "html/locationOverview.html", "html/wrongInput.html",
@@ -81,4 +81,20 @@ func GetPath() string {
 }
 func GetTokenDuration() time.Duration {
 	return tokenDuration
+}
+
+func InitByMatthias() {
+	err := flag.Set("endPagePath", "../../html/endPage.html")
+	if err != nil {
+		return
+	}
+	err = flag.Set("loginPagePath", "../../html/loginPage.html")
+	if err != nil {
+		return
+	}
+	err = flag.Set("logoutPagePath", "../../html/logoutPage.html")
+	if err != nil {
+		return
+	}
+
 }

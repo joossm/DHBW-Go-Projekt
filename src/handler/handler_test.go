@@ -10,70 +10,37 @@ import (
 )
 
 func TestLoginWithNoToken(t *testing.T) {
-	// Create a request to pass to our handler. We don't have any query parameters for now, so we'll
-	// pass 'nil' as the third parameter.
 	req, err := http.NewRequest("GET", "/login", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(LoginUser)
 
-	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
-	// directly and pass in our Request and ResponseRecorder.
 	handler.ServeHTTP(rr, req)
-
-	// Check the status code is what we expect.
 	if status := rr.Code; status != http.StatusForbidden {
-		t.Errorf("handler returned wrong status code: got %v want %v",
-			status, http.StatusForbidden)
+		t.Errorf("status code: got %v want %v", status, http.StatusForbidden)
 	}
 
-	/*// Check the response body is what we expect.
-	expected := `{"alive": true}`
-	if rr.Body.String() != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v",
-			rr.Body.String(), expected)
-	}*/
 }
 func TestLoginWithWrongToken(t *testing.T) {
-
-	config.Init()
 	locations := []string{"Mosbach"}
 	token.CreateAndUpdateTokenMap(locations)
-	// Create a request to pass to our handler. We don't have any query parameters for now, so we'll
-	// pass 'nil' as the third parameter.
-	req, err := http.NewRequest("GET", "/login?token=FALSCH&location=Mosbach", nil)
+	request, err := http.NewRequest("GET", "/login?token=FALSCH&location=Mosbach", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
-	rr := httptest.NewRecorder()
+	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(LoginUser)
+	handler.ServeHTTP(recorder, request)
 
-	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
-	// directly and pass in our Request and ResponseRecorder.
-	handler.ServeHTTP(rr, req)
-
-	// Check the status code is what we expect.
-	if status := rr.Code; status != http.StatusForbidden {
-		t.Errorf("handler returned wrong status code: got %v want %v",
-			status, http.StatusForbidden)
+	if code := recorder.Code; code != http.StatusForbidden {
+		t.Errorf("expected %v got %v", http.StatusForbidden, code)
 	}
-
-	/*// Check the response body is what we expect.
-	expected := `{"alive": true}`
-	if rr.Body.String() != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v",
-			rr.Body.String(), expected)
-	}*/
 }
 func TestLoginWithRightToken(t *testing.T) {
-
-	config.Init()
+	config.InitByMatthias()
 	locations := []string{"Mosbach"}
 	token.CreateAndUpdateTokenMap(locations)
 
@@ -82,60 +49,34 @@ func TestLoginWithRightToken(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(LoginUser)
-
-	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
-	// directly and pass in our Request and ResponseRecorder.
 	handler.ServeHTTP(rr, req)
 
-	// Check the status code is what we expect.
 	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v",
-			status, http.StatusOK)
+		t.Errorf("wrong status code: got %v want %v", status, http.StatusOK)
 	}
 
-	/*// Check the response body is what we expect.
-	expected := `{"alive": true}`
-	if rr.Body.String() != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v",
-			rr.Body.String(), expected)
-	}*/
 }
 
 func TestLogout(t *testing.T) {
-
-	config.Init()
+	config.InitByMatthias()
 	locations := []string{"Mosbach"}
 	token.CreateAndUpdateTokenMap(locations)
-	// Create a request to pass to our handler. We don't have any query parameters for now, so we'll
-	// pass 'nil' as the third parameter.
+
 	req, err := http.NewRequest("GET", "/logout", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(LoginUser)
-
-	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
-	// directly and pass in our Request and ResponseRecorder.
+	handler := http.HandlerFunc(LogoutUser)
 	handler.ServeHTTP(rr, req)
 
-	// Check the status code is what we expect.
-	if status := rr.Code; status != http.StatusForbidden {
-		t.Errorf("handler returned wrong status code: got %v want %v",
-			status, http.StatusForbidden)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("wrong status code: %v want %v", status, http.StatusOK)
 	}
 
-	/*// Check the response body is what we expect.
-	expected := `{"alive": true}`
-	if rr.Body.String() != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v",
-			rr.Body.String(), expected)
-	}*/
 }
 func TestAlreadyLoggedIn(t *testing.T) {
 
@@ -145,4 +86,14 @@ func TestCombineText(t *testing.T) {
 	var address = "74081 Heilbronn"
 	var location = "Mosbach"
 	assert.Equal(t, name+", "+address+", "+location, combineText(name, address, location))
+}
+func TestGetLocation(t *testing.T) {
+	req, err := http.NewRequest("GET", "/Mosbach?", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(LoginUser)
+	handler.ServeHTTP(rr, req)
+	assert.Equal(t, "Mosbach", getLocation(req))
 }
