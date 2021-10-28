@@ -28,26 +28,33 @@ var fileServerPath string
 var qrCodePath string
 
 //Other Paths
-
-func Init() {
-	SetFlags("8443", "8444", 5*time.Minute, "assets/locations.xml")
+func init(){
+	SetPrimaryFlags("8443", "8444", 5*time.Minute)
 	SetFlagsForPaths("src/log/files/", "html/logoutPage.html", "html/loginPage.html",
 		"html/endPage.html", "html/locationOverview.html", "html/wrongInput.html",
-		"server.crt", "server.key", "./html/", "html/qrCodes/")
+		"server.crt", "server.key", "./html/", "html/qrCodes/", "assets/locations.xml")
 	SetFlagsForLinks("/", "/login", "/logout", "/location", "/end", "/html/")
 }
-func InitForTest() {
-	SetFlags("8443", "8444", 5*time.Minute, "assets/locations.xml")
+
+func Init() {
 }
-func SetFlags(pPort1 string, pPort2 string, pTokenDur time.Duration, pXmlPath string) {
+func InitForTest() {
+	SetPrimaryFlags("8443", "8444", 5*time.Minute)
+	//TODO change Paths for Tests
+	SetFlagsForPaths("src/log/files/", "html/logoutPage.html", "html/loginPage.html",
+		"html/endPage.html", "html/locationOverview.html", "html/wrongInput.html",
+		"server.crt", "server.key", "./html/", "html/qrCodes/", "assets/locations.xml")
+	SetFlagsForLinks("/", "/login", "/logout", "/location", "/end", "/html/")
+}
+func SetPrimaryFlags(pPort1 string, pPort2 string, pTokenDur time.Duration) {
 	flag.StringVar(&port1, "port1", pPort1, "4-digit number for the port regarding the qrCodeScan")
 	flag.StringVar(&port2, "port2", pPort2, "4-digit number for the login Page")
 	flag.DurationVar(&tokenDuration, "tokenDuration", pTokenDur, "The life duration of the token")
-	flag.StringVar(&xmlPath, "xmlPath", pXmlPath, "Path to the xmlFile storing the locations")
+
 }
 func SetFlagsForPaths(pLogfilePath string, pLogoutPagePath string, pLoginPagePath string, pEndPagePath string,
 	pLocationOverviewPath string, pWrongInputPath string, pCertFilePath string,
-	pKeyFilePath string, pFileServerPath string, pQrCodePath string) {
+	pKeyFilePath string, pFileServerPath string, pQrCodePath string, pXmlPath string) {
 	flag.StringVar(&logfilePath, "logfilePath", pLogfilePath, "Where the logs are stored")
 	flag.StringVar(&logoutPagePath, "logoutPagePath", pLogoutPagePath, "Where the logout.html is stored")
 	flag.StringVar(&loginPagePath, "loginPagePath", pLoginPagePath, "Where the login.html is stored")
@@ -58,6 +65,7 @@ func SetFlagsForPaths(pLogfilePath string, pLogoutPagePath string, pLoginPagePat
 	flag.StringVar(&keyFilePath, "keyFilePath", pKeyFilePath, "Where the keyFile is stored")
 	flag.StringVar(&fileServerPath, "fileServerPath", pFileServerPath, "Where the fileServer is stored")
 	flag.StringVar(&qrCodePath, "qrCodePath", pQrCodePath, "Where the fileServer is stored")
+	flag.StringVar(&xmlPath, "xmlPath", pXmlPath, "Path to the xmlFile storing the locations")
 }
 func SetFlagsForLinks(pStandardUrl string, pLoginUrl string, pLogoutUrl string, pLocationUrl string,
 	pEndUrl string, pFileServerUrl string) {

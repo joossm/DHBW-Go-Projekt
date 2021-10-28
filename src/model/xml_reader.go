@@ -1,7 +1,6 @@
 package model
 
 import (
-	"GoProjekt/src/model/config"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
@@ -73,7 +72,6 @@ func (this LocationsList)ShowAllLoc() []*Location{
 	return this.Locations
 }
 func init(){
-	config.Init()
 }
 
 func ReadXmlFile(path string) LocationsList {
