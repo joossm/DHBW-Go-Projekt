@@ -44,14 +44,14 @@ func main() {
 	}()
 
 	go func() {
-		log.Printf("About to listen on 8443. Go to https://127.0.0.1:8443/login?token=FPLLNGZIEYOH")
+		log.Printf("About to listen on 8443. Go to https://127.0.0.1:8443/location")
 		err := http.ListenAndServeTLS(":"+port1, "server.crt", "server.key", serverMuxA)
 		if err != nil {
 			return
 		} // port1 added needs to be tested
 	}()
 
-	log.Printf("About to listen on 8444. Go to https://127.0.0.1:8444/qr")
+	log.Printf("About to listen on 8444. Go to https://127.0.0.1:8444/Mosbach")
 	err := http.ListenAndServeTLS(":"+port2, "server.crt", "server.key", serverMuxB)
 	if err != nil {
 		return
