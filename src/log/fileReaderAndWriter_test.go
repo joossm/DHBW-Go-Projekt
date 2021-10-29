@@ -39,6 +39,7 @@ func TestCreateFile(t *testing.T) {
 	_ = os.Remove("../../src/log/files/fileTest.txt")
 	assert.NoFileExists(t, "../../src/log/files/fileTest.txt")
 }
+
 func TestWriteToFile(t *testing.T) {
 	config.InitByMatthias()
 	var before, _ = ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + getDateInFormat() + ".txt")
@@ -53,6 +54,19 @@ func TestWriteToFile(t *testing.T) {
 	for i := 0; i < len(beforLine)-1; i++ {
 		data = append(data, []byte(lines[i]+"\n")...)
 	}
+
 	err := ioutil.WriteFile(flag.Lookup("logfilePath").Value.String()+getDateInFormat()+".txt", []byte(data), 0644)
 	panicHandling(err)
+	_ = os.Remove(flag.Lookup("logfilePath").Value.String() + getDateInFormat() + ".txt")
+	assert.NoFileExists(t, flag.Lookup("logfilePath").Value.String()+getDateInFormat()+".txt")
+
+	WriteToFile(true, "Test")
+	var checkN, _ = ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + getDateInFormat() + ".txt")
+	assert.Equal(t, []byte("LOGIN, Oct 28 18:00:28, test;\n")[0:4], checkN[0:4])
+
+	_ = os.Remove(flag.Lookup("logfilePath").Value.String() + getDateInFormat() + ".txt")
+	assert.NoFileExists(t, flag.Lookup("logfilePath").Value.String()+getDateInFormat()+".txt")
+
+	err = ioutil.WriteFile(flag.Lookup("logfilePath").Value.String()+getDateInFormat()+".txt", []byte(data), 0644)
+	assert.FileExists(t, flag.Lookup("logfilePath").Value.String()+getDateInFormat()+".txt")
 }
