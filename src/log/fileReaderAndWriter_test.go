@@ -43,7 +43,7 @@ func TestCreateFile(t *testing.T) {
 func TestWriteToFile(t *testing.T) {
 	config.InitByMatthias()
 	var before, _ = ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + getDateInFormat() + ".txt")
-	beforLine := strings.Split(string(before), "\n")
+	beforeLine := strings.Split(string(before), "\n")
 	WriteToFile(true, "Test")
 	var check, _ = ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + getDateInFormat() + ".txt")
 	assert.Equal(t, []byte("LOGIN, Oct 28 18:00:28, test;\n")[0:4], check[0:4])
@@ -51,7 +51,7 @@ func TestWriteToFile(t *testing.T) {
 	lines := strings.Split(string(check), "\n")
 	var data []byte
 
-	for i := 0; i < len(beforLine)-1; i++ {
+	for i := 0; i < len(beforeLine)-2; i++ {
 		data = append(data, []byte(lines[i]+"\n")...)
 	}
 

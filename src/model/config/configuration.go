@@ -100,4 +100,12 @@ func InitByMatthias() {
 	if err != nil {
 		return
 	}
+	err = flag.Set("locationOverviewPath", "../../html/locationOverview.html")
+	if err != nil {
+		return
+	}
+	err = flag.Set("wrongInputPath", "../../html/wrongInput.html")
+	if err != nil {
+		return
+	}
 }

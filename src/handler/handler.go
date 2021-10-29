@@ -33,6 +33,7 @@ func parseAndExecuteWebsite(filename string, w http.ResponseWriter, data interfa
 	err = t.Execute(w, data)
 	errorHandling(err)
 }
+
 func validateInputZipAndHouseNumber(w http.ResponseWriter, r *http.Request, forms ...string) (erg bool, str string) {
 	for _, form := range forms {
 		matchString, _ := regexp.MatchString("^[0-9]+$", r.FormValue(form))
