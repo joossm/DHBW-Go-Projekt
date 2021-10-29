@@ -10,7 +10,7 @@ import (
 var locationsList = LocationsList{}
 
 type LocationsList struct {
-	XMLName   xml.Name   `xml:"locations"`
+	XMLName   xml.Name    `xml:"locations"`
 	Locations []*Location `xml:"location"`
 }
 type Location struct {
@@ -20,21 +20,22 @@ type Location struct {
 type AllLocations struct {
 	Location []*Location
 }
-func GetList() LocationsList{
+
+func GetList() LocationsList {
 	return locationsList
 }
 
-func (this LocationsList) equals(list LocationsList) bool{
+func (this LocationsList) equals(list LocationsList) bool {
 	lenA := len(this.Locations)
 	lenB := len(list.Locations)
-	if lenA != lenB{
+	if lenA != lenB {
 		return false
-	}else{
-	for i:=0;i<lenA;i++{
-		if this.Locations[i].Name!=list.Locations[i].Name{
-			return false
+	} else {
+		for i := 0; i < lenA; i++ {
+			if this.Locations[i].Name != list.Locations[i].Name {
+				return false
+			}
 		}
-	}
 		return true
 	}
 }
@@ -53,6 +54,7 @@ func errorHandling(err error) {
 		fmt.Println(err)
 	}
 }
+
 /*
 func ShowAllLocations() (au *AllLocations) {
 	file, err := os.OpenFile(flag.Lookup("xmlPath").Value.String(), os.O_RDWR|os.O_APPEND, 0666)
@@ -67,15 +69,14 @@ func ShowAllLocations() (au *AllLocations) {
 }
 */
 
-
-func (this LocationsList)ShowAllLoc() []*Location{
+func (this LocationsList) ShowAllLoc() []*Location {
 	return this.Locations
 }
-func init(){
+func init() {
 }
 
 func ReadXmlFile(path string) LocationsList {
-	xmlFile, err := os.OpenFile(path,os.O_RDWR|os.O_APPEND, 0666)
+	xmlFile, err := os.OpenFile(path, os.O_RDWR|os.O_APPEND, 0666)
 	errorHandling(err)
 	defer xmlFile.Close()
 	byteValue, err := ioutil.ReadAll(xmlFile)

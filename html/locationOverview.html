@@ -11,14 +11,14 @@
     <h1>Overview of the QR Codes for several Locations</h1>
     <br>
     <br><br>
-        {{range .}}
-            <br>
-            <div><h2>{{ .Name }}</h2></div>
-            <form action="https://127.0.0.1:8444/{{ .Name }}">
-                <input type="submit" value="QR Code of {{ .Name }}"/>
-            </form>
-            <div></div>
-        {{end}}
+    {{range .}}
+        <br>
+        <div><h2>{{ .Name }}</h2></div>
+        <form action="https://127.0.0.1:8444/{{ .Name }}">
+            <input type="submit" value="QR Code of {{ .Name }}"/>
+        </form>
+        <div></div>
+    {{end}}
 </div>
 </body>
 </html>

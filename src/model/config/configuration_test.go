@@ -24,12 +24,14 @@ func TestInit(t *testing.T) {
 	//check if Flag is parsed
 	assert.Equal(t, flag.Parsed(), true)
 }
+
 //check primary Flags != nil
 func TestPrimaryFlagsNotNil(t *testing.T) {
 	assert.False(t, flag.Lookup("port1") == nil)
 	assert.False(t, flag.Lookup("port2") == nil)
 	assert.False(t, flag.Lookup("tokenDuration") == nil)
 }
+
 //check Path Flags != nil
 func TestPathFlagsNotNil(t *testing.T) {
 	assert.False(t, flag.Lookup("logfilePath") == nil)
@@ -44,6 +46,7 @@ func TestPathFlagsNotNil(t *testing.T) {
 	assert.False(t, flag.Lookup("qrCodePath") == nil)
 	assert.False(t, flag.Lookup("xmlPath") == nil)
 }
+
 //check Link Flags != nil
 func TestLinkFlagsNotNil(t *testing.T) {
 	assert.False(t, flag.Lookup("standardUrl") == nil)
@@ -54,14 +57,15 @@ func TestLinkFlagsNotNil(t *testing.T) {
 	assert.False(t, flag.Lookup("fileServerUrl") == nil)
 }
 
-	//check that flag has the same values as config (ckeck if the flag is reachable)
-		//primary Flags
+//check that flag has the same values as config (ckeck if the flag is reachable)
+//primary Flags
 func TestPrimaryFlagsReachable(t *testing.T) {
 	assert.Equal(t, port1, flag.Lookup("port1").Value.String(), true)
 	assert.Equal(t, port2, flag.Lookup("port2").Value.String(), true)
 	assert.Equal(t, tokenDuration.String(), flag.Lookup("tokenDuration").Value.String(), true)
 
 }
+
 //path Flags
 func TestPathFlagsReachable(t *testing.T) {
 	assert.Equal(t, logfilePath, flag.Lookup("logfilePath").Value.String(), true)
@@ -76,6 +80,7 @@ func TestPathFlagsReachable(t *testing.T) {
 	assert.Equal(t, qrCodePath, flag.Lookup("qrCodePath").Value.String(), true)
 	assert.Equal(t, xmlPath, flag.Lookup("xmlPath").Value.String(), true)
 }
+
 //Link Flags
 func TestLinkFlagsReachable(t *testing.T) {
 	assert.Equal(t, standardUrl, flag.Lookup("standardUrl").Value.String(), true)
@@ -87,19 +92,19 @@ func TestLinkFlagsReachable(t *testing.T) {
 }
 
 func TestInitByMatthias(t *testing.T) {
-	assert.False(t, flag.Lookup("endPagePath").Value.String()=="../../html/endPage.html")
-	assert.False(t, flag.Lookup("loginPagePath").Value.String()=="../../html/loginPage.html")
-	assert.False(t, flag.Lookup("logoutPagePath").Value.String()=="../../html/logoutPage.html")
+	assert.False(t, flag.Lookup("endPagePath").Value.String() == "../../html/endPage.html")
+	assert.False(t, flag.Lookup("loginPagePath").Value.String() == "../../html/loginPage.html")
+	assert.False(t, flag.Lookup("logoutPagePath").Value.String() == "../../html/logoutPage.html")
 	InitByMatthias()
-	assert.True(t, flag.Lookup("endPagePath").Value.String()=="../../html/endPage.html")
-	assert.True(t, flag.Lookup("loginPagePath").Value.String()=="../../html/loginPage.html")
-	assert.True(t, flag.Lookup("logoutPagePath").Value.String()=="../../html/logoutPage.html")
+	assert.True(t, flag.Lookup("endPagePath").Value.String() == "../../html/endPage.html")
+	assert.True(t, flag.Lookup("loginPagePath").Value.String() == "../../html/loginPage.html")
+	assert.True(t, flag.Lookup("logoutPagePath").Value.String() == "../../html/logoutPage.html")
 
 }
 
 func TestGetPath(t *testing.T) {
-	assert.True(t, flag.Lookup("xmlPath").Value.String()==GetPath())
+	assert.True(t, flag.Lookup("xmlPath").Value.String() == GetPath())
 }
 func TestGetTokenDuration(t *testing.T) {
-	assert.True(t, flag.Lookup("tokenDuration").Value.String()==GetTokenDuration().String())
+	assert.True(t, flag.Lookup("tokenDuration").Value.String() == GetTokenDuration().String())
 }
