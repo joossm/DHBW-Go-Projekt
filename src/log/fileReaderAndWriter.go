@@ -22,7 +22,7 @@ func getDateInFormat() string {
 }
 
 func getTimeStamp() string {
-	return time.Now().Format(time.Stamp)
+	return time.Now().Format(time.RFC3339)
 }
 
 func createText(login bool, textToWrite string) string {

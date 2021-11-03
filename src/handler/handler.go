@@ -14,135 +14,137 @@ import (
 	_ "strings"
 )
 
-func QrCodeCreate(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
-		log.Println(urlBuilder(r))
-		log.Println(getLocation(r))
-		var filename = flag.Lookup("qrCodePath").Value.String() + getLocation(r) + ".png"
-		_ = qrcode.WriteFile(urlBuilder(r), qrcode.Medium, 256, filename)
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		AddForm := "<head><title>QR Code " + getLocation(r) + "</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><div style=\"text-align: center;\"><br><br><br><br><br><br><br><br><h1>" + getLocation(r) + "</h1><br><br><br><br><img alt=\"" + urlBuilder(r) + "\" src=\"html/qrCodes/" + getLocation(r) + ".png\"></div><body>"
-		fmt.Fprint(w, AddForm)
+func QrCodeCreate(responseWriter http.ResponseWriter, request *http.Request) {
+	if request.Method == "GET" {
+		log.Println(urlBuilder(request))
+		log.Println(getLocation(request))
+		var filename = flag.Lookup("qrCodePath").Value.String() + getLocation(request) + ".png"
+		_ = qrcode.WriteFile(urlBuilder(request), qrcode.Medium, 256, filename)
+		responseWriter.Header().Set("Content-Type", "text/html; charset=utf-8")
+		AddForm := "<head><title>QR Code " + getLocation(request) + "</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><div style=\"text-align: center;\"><br><br><br><br><br><br><br><br><h1>" + getLocation(request) + "</h1><br><br><br><br><img alt=\"" + urlBuilder(request) + "\" src=\"html/qrCodes/" + getLocation(request) + ".png\"></div><body>"
+		_, err := fmt.Fprint(responseWriter, AddForm)
+		if err != nil {
+			return
+		}
 		return
 	}
 }
 
-func parseAndExecuteWebsite(filename string, w http.ResponseWriter, data interface{}) {
+func parseAndExecuteWebsite(filename string, responseWriter http.ResponseWriter, data interface{}) {
 	t, err := template.ParseFiles(filename)
 	errorHandling(err)
-	err = t.Execute(w, data)
+	err = t.Execute(responseWriter, data)
 	errorHandling(err)
 }
 
-func validateInputZipAndHouseNumber(w http.ResponseWriter, r *http.Request, forms ...string) (erg bool, str string) {
+func validateInputNumber(request *http.Request, forms ...string) (erg bool, str string) {
 	for _, form := range forms {
-		matchString, _ := regexp.MatchString("^[0-9]+$", r.FormValue(form))
+		matchString, _ := regexp.MatchString("^[0-9]+$", request.FormValue(form))
 		if matchString == false {
-			return false, "Please use only upper and lower case letters for full name and address. Thank you."
+			return false, "Please use only numbers for zip code and house number. Thank you very much!"
 		}
 
 	}
 	return true, ""
 }
-func validateInput(w http.ResponseWriter, r *http.Request, forms ...string) (erg bool, str string) {
+func validateInputLetter(request *http.Request, forms ...string) (erg bool, str string) {
 	for _, form := range forms {
-		matchString, _ := regexp.MatchString("[a-zA-z- ]+", r.FormValue(form))
+		matchString, _ := regexp.MatchString("[a-zA-z- ]+", request.FormValue(form))
 		if matchString == false {
-			return false, "Please use only upper and lower case letters for full name and address. Thank you." + form
+			return false, "Please use only upper and lower case letters for first and last name as well as city and street. Thank you very much!" + form
 		}
 
 	}
 	return true, ""
 }
-func LoginUser(w http.ResponseWriter, r *http.Request) {
-	if alreadyLoggedIn(r) == true {
-		var name = informationsFromCookies("name", r)
-		var address = informationsFromCookies("address", r)
-		var location = proofIfLoginInSameLocation(r)
+func LoginUser(responseWriter http.ResponseWriter, request *http.Request) {
+	if alreadyLoggedIn(request) == true {
+		var name = informationsFromCookies("name", request)
+		var address = informationsFromCookies("address", request)
+		var location = proofIfLoginInSameLocation(request)
 
 		report.WriteToFile(true, combineText(name, address, location))
 
-		setCookie(w, "name", name)
-		setCookie(w, "address", address)
-		setCookie(w, "location", location)
+		setCookie(responseWriter, "name", name)
+		setCookie(responseWriter, "address", address)
+		setCookie(responseWriter, "location", location)
 
-		http.Redirect(w, r, flag.Lookup("logoutUrl").Value.String(), 301)
+		http.Redirect(responseWriter, request, flag.Lookup("logoutUrl").Value.String(), 301)
 	} else {
 
-		if r.Method == "GET" {
+		if request.Method == "GET" {
 
-			if r.URL.Query().Get("token") != "" {
+			if request.URL.Query().Get("token") != "" {
 
-				var tokenParameter = r.URL.Query().Get("token")
-				var locationParameter = r.URL.Query().Get("location")
+				var tokenParameter = request.URL.Query().Get("token")
+				var locationParameter = request.URL.Query().Get("location")
 
 				if token.ValidateTokenByLocation(tokenParameter, locationParameter) == true {
 
 					log.Println("Token Valid")
-					setCookie(w, "location", r.URL.Query().Get("location"))
+					setCookie(responseWriter, "location", request.URL.Query().Get("location"))
 
-					parseAndExecuteWebsite(flag.Lookup("loginPagePath").Value.String(), w, nil)
+					parseAndExecuteWebsite(flag.Lookup("loginPagePath").Value.String(), responseWriter, nil)
 
 				} else {
 
 					log.Println("Token Invalid")
-					http.Redirect(w, r, flag.Lookup("standardUrl").Value.String(), 403)
+					http.Redirect(responseWriter, request, flag.Lookup("standardUrl").Value.String(), 403)
 				}
 
 			} else {
 
 				log.Println("No Token")
-				http.Redirect(w, r, flag.Lookup("standardUrl").Value.String(), 403)
+				http.Redirect(responseWriter, request, flag.Lookup("standardUrl").Value.String(), 403)
 			}
 
 		} else {
-			resBool, errStr := validateInputZipAndHouseNumber(w, r, "zipCode", "houseNumber")
-			resBool, errStr = validateInput(w, r, "firstName", "lastName", "cityName", "streetName")
+			resBool, errStr := validateInputNumber(request, "zipCode", "houseNumber")
+			resBool, errStr = validateInputLetter(request, "firstName", "lastName", "cityName", "streetName")
 			if resBool == false {
-				parseAndExecuteWebsite(flag.Lookup("wrongInputPath").Value.String(), w, errStr)
-
+				parseAndExecuteWebsite(flag.Lookup("wrongInputPath").Value.String(), responseWriter, errStr)
 				return
 			}
-			name := r.FormValue("firstName") + " " + r.FormValue("lastName")
-			address := r.FormValue("zipCode") + " " + r.FormValue("cityName") + " " + r.FormValue("streetName") + " " + r.FormValue("houseNumber")
-			var location = informationsFromCookies("location", r)
+			name := request.FormValue("firstName") + " " + request.FormValue("lastName")
+			address := request.FormValue("zipCode") + " " + request.FormValue("cityName") + " " + request.FormValue("streetName") + " " + request.FormValue("houseNumber")
+			var location = informationsFromCookies("location", request)
 
 			report.WriteToFile(true, combineText(name, address, location))
 
-			setCookie(w, "name", name)
-			setCookie(w, "address", address)
+			setCookie(responseWriter, "name", name)
+			setCookie(responseWriter, "address", address)
 
-			http.Redirect(w, r, flag.Lookup("logoutUrl").Value.String(), 301)
+			http.Redirect(responseWriter, request, flag.Lookup("logoutUrl").Value.String(), 301)
 		}
 	}
 }
 
-func LogoutUser(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
-		parseAndExecuteWebsite(flag.Lookup("logoutPagePath").Value.String(), w, nil)
+func LogoutUser(responseWriter http.ResponseWriter, request *http.Request) {
+	if request.Method == "GET" {
+		parseAndExecuteWebsite(flag.Lookup("logoutPagePath").Value.String(), responseWriter, nil)
 	} else {
-		var name = informationsFromCookies("name", r)
-		var address = informationsFromCookies("address", r)
-		var location = informationsFromCookies("location", r)
+		var name = informationsFromCookies("name", request)
+		var address = informationsFromCookies("address", request)
+		var location = informationsFromCookies("location", request)
 		report.WriteToFile(false, combineText(name, address, location))
-		http.Redirect(w, r, flag.Lookup("endUrl").Value.String(), 301)
+		http.Redirect(responseWriter, request, flag.Lookup("endUrl").Value.String(), 301)
 	}
 }
 
-func End(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
-		parseAndExecuteWebsite(flag.Lookup("endPagePath").Value.String(), w, nil)
+func End(responseWriter http.ResponseWriter, request *http.Request) {
+	if request.Method == "GET" {
+		parseAndExecuteWebsite(flag.Lookup("endPagePath").Value.String(), responseWriter, nil)
 	} else {
-		http.Redirect(w, r, flag.Lookup("endUrl").Value.String(), 301)
+		http.Redirect(responseWriter, request, flag.Lookup("endUrl").Value.String(), 301)
 	}
 }
 
-func SelectLocation(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
+func SelectLocation(responseWriter http.ResponseWriter, request *http.Request) {
+	if request.Method == "GET" {
 		locations := model.GetList().ShowAllLoc()
-		parseAndExecuteWebsite(flag.Lookup("locationOverviewPath").Value.String(), w, locations)
+		parseAndExecuteWebsite(flag.Lookup("locationOverviewPath").Value.String(), responseWriter, locations)
 	} else {
-		http.Redirect(w, r, flag.Lookup("locationUrl").Value.String(), 301)
+		http.Redirect(responseWriter, request, flag.Lookup("locationUrl").Value.String(), 301)
 	}
 }
 
@@ -152,10 +154,10 @@ func errorHandling(err error) {
 	}
 }
 
-func alreadyLoggedIn(r *http.Request) bool {
+func alreadyLoggedIn(request *http.Request) bool {
 	var loggedInWithName bool
 	var loggedInWithAddress bool
-	for _, cookie := range r.Cookies() {
+	for _, cookie := range request.Cookies() {
 		if cookie.Name == "name" {
 			loggedInWithName = true
 		}
@@ -170,8 +172,8 @@ func alreadyLoggedIn(r *http.Request) bool {
 	}
 }
 
-func informationsFromCookies(value string, r *http.Request) string {
-	for _, cookie := range r.Cookies() {
+func informationsFromCookies(value string, request *http.Request) string {
+	for _, cookie := range request.Cookies() {
 		if cookie.Name == "name" && value == "name" {
 			return cookie.Value
 		}
@@ -189,23 +191,23 @@ func combineText(name string, address string, location string) string {
 	return name + ", " + address + ", " + location
 }
 
-func proofIfLoginInSameLocation(r *http.Request) string {
-	if r.URL.Query().Get("location") != "" {
-		return r.URL.Query().Get("location")
+func proofIfLoginInSameLocation(request *http.Request) string {
+	if request.URL.Query().Get("location") != "" {
+		return request.URL.Query().Get("location")
 	} else {
-		return informationsFromCookies("location", r)
+		return informationsFromCookies("location", request)
 	}
 }
 
-func setCookie(w http.ResponseWriter, name string, value string) {
+func setCookie(responseWriter http.ResponseWriter, name string, value string) {
 	cookieToStore := http.Cookie{Name: name, Value: value}
-	http.SetCookie(w, &cookieToStore)
+	http.SetCookie(responseWriter, &cookieToStore)
 }
 
-func urlBuilder(r *http.Request) string {
+func urlBuilder(request *http.Request) string {
 
-	return "https://127.0.0.1:8443/login?token=" + token.GetTokenByLocation(getLocation(r)) + "&location=" + getLocation(r)
+	return "https://127.0.0.1:8443/login?token=" + token.GetTokenByLocation(getLocation(request)) + "&location=" + getLocation(request)
 }
-func getLocation(r *http.Request) string {
-	return r.URL.String()[1 : len(r.URL.String())-1]
+func getLocation(request *http.Request) string {
+	return request.URL.String()[1 : len(request.URL.String())-1]
 }

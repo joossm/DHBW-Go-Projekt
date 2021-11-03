@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GoProjekt/src/cmd"
 	"GoProjekt/src/handler"
 	"GoProjekt/src/model"
 	"GoProjekt/src/model/config"
@@ -15,7 +16,7 @@ import (
 )
 
 func main() {
-	//cmd.Lauft()
+	cmd.AnlayzeReport()
 	var serverMuxA = http.NewServeMux()
 	var serverMuxB = http.NewServeMux()
 
@@ -58,5 +59,4 @@ func main() {
 	if err != nil {
 		return
 	}
-
 }

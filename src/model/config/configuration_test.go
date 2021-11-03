@@ -95,7 +95,7 @@ func TestInitByMatthias(t *testing.T) {
 	assert.False(t, flag.Lookup("endPagePath").Value.String() == "../../html/endPage.html")
 	assert.False(t, flag.Lookup("loginPagePath").Value.String() == "../../html/loginPage.html")
 	assert.False(t, flag.Lookup("logoutPagePath").Value.String() == "../../html/logoutPage.html")
-	InitByMatthias()
+	InitForTesting()
 	assert.True(t, flag.Lookup("endPagePath").Value.String() == "../../html/endPage.html")
 	assert.True(t, flag.Lookup("loginPagePath").Value.String() == "../../html/loginPage.html")
 	assert.True(t, flag.Lookup("logoutPagePath").Value.String() == "../../html/logoutPage.html")

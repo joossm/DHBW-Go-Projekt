@@ -4,7 +4,6 @@ import (
 	"GoProjekt/src/model/config"
 	"GoProjekt/src/token"
 	"flag"
-	"fmt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"io/ioutil"
@@ -17,16 +16,16 @@ import (
 )
 
 func TestLoginWithNoToken(t *testing.T) {
-	req, err := http.NewRequest("GET", "/login", nil)
+	request, err := http.NewRequest("GET", "/login", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	rr := httptest.NewRecorder()
+	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(LoginUser)
 
-	handler.ServeHTTP(rr, req)
-	if status := rr.Code; status != http.StatusForbidden {
+	handler.ServeHTTP(recorder, request)
+	if status := recorder.Code; status != http.StatusForbidden {
 		t.Errorf("status code: got %v want %v", status, http.StatusForbidden)
 	}
 
@@ -47,50 +46,50 @@ func TestLoginWithWrongToken(t *testing.T) {
 	}
 }
 func TestLoginWithRightToken(t *testing.T) {
-	config.InitByMatthias()
+	config.InitForTesting()
 	locations := []string{"Mosbach"}
 	token.CreateAndUpdateTokenMap(locations)
 
-	req, err := http.NewRequest("GET", "/login?token=FPLLNGZIEYOH&location=Mosbach", nil)
+	request, err := http.NewRequest("GET", "/login?token=FPLLNGZIEYOH&location=Mosbach", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	rr := httptest.NewRecorder()
+	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(LoginUser)
-	handler.ServeHTTP(rr, req)
+	handler.ServeHTTP(recorder, request)
 
-	if status := rr.Code; status != http.StatusOK {
+	if status := recorder.Code; status != http.StatusOK {
 		t.Errorf("wrong status code: got %v want %v", status, http.StatusOK)
 	}
 
 }
 
 func TestLogout(t *testing.T) {
-	config.InitByMatthias()
+	config.InitForTesting()
 	locations := []string{"Mosbach"}
 	token.CreateAndUpdateTokenMap(locations)
 
-	req, err := http.NewRequest("GET", "/logout", nil)
+	request, err := http.NewRequest("GET", "/logout", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	rr := httptest.NewRecorder()
+	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(LogoutUser)
-	handler.ServeHTTP(rr, req)
+	handler.ServeHTTP(recorder, request)
 
-	if status := rr.Code; status != http.StatusOK {
+	if status := recorder.Code; status != http.StatusOK {
 		t.Errorf("wrong status code: %v want %v", status, http.StatusOK)
 	}
 
-	req, err = http.NewRequest("POST", "/end", nil)
+	request, err = http.NewRequest("POST", "/end", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	handler.ServeHTTP(rr, req)
-	if status := rr.Code; status != http.StatusOK {
+	handler.ServeHTTP(recorder, request)
+	if status := recorder.Code; status != http.StatusOK {
 		t.Errorf("status code: got %v want %v", status, http.StatusOK)
 	}
 }
@@ -102,68 +101,68 @@ func TestCombineText(t *testing.T) {
 	assert.Equal(t, name+", "+address+", "+location, combineText(name, address, location))
 }
 func TestGetLocation(t *testing.T) {
-	req, err := http.NewRequest("GET", "/Mosbach?", nil)
+	request, err := http.NewRequest("GET", "/Mosbach?", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	rr := httptest.NewRecorder()
+	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(LoginUser)
-	handler.ServeHTTP(rr, req)
-	assert.Equal(t, "Mosbach", getLocation(req))
+	handler.ServeHTTP(recorder, request)
+	assert.Equal(t, "Mosbach", getLocation(request))
 }
 func TestEnd(t *testing.T) {
-	config.InitByMatthias()
-	req, err := http.NewRequest("GET", "/end", nil)
+	config.InitForTesting()
+	request, err := http.NewRequest("GET", "/end", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	rr := httptest.NewRecorder()
+	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(End)
 
-	handler.ServeHTTP(rr, req)
-	if status := rr.Code; status != http.StatusOK {
+	handler.ServeHTTP(recorder, request)
+	if status := recorder.Code; status != http.StatusOK {
 		t.Errorf("status code: got %v want %v", status, http.StatusOK)
 	}
 
-	req, err = http.NewRequest("POST", "/end", nil)
+	request, err = http.NewRequest("POST", "/end", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	handler.ServeHTTP(rr, req)
-	if status := rr.Code; status != http.StatusOK {
+	handler.ServeHTTP(recorder, request)
+	if status := recorder.Code; status != http.StatusOK {
 		t.Errorf("status code: got %v want %v", status, http.StatusOK)
 	}
 
 }
 func TestSelectLocation(t *testing.T) {
-	config.InitByMatthias()
-	req, err := http.NewRequest("GET", "/location", nil)
+	config.InitForTesting()
+	request, err := http.NewRequest("GET", "/location", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	rr := httptest.NewRecorder()
+	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(SelectLocation)
 
-	handler.ServeHTTP(rr, req)
-	if status := rr.Code; status != http.StatusOK {
+	handler.ServeHTTP(recorder, request)
+	if status := recorder.Code; status != http.StatusOK {
 		t.Errorf("status code: got %v want %v", status, http.StatusOK)
 	}
 
-	req, err = http.NewRequest("POST", "/location", nil)
+	request, err = http.NewRequest("POST", "/location", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	handler.ServeHTTP(rr, req)
-	if status := rr.Code; status != http.StatusOK {
+	handler.ServeHTTP(recorder, request)
+	if status := recorder.Code; status != http.StatusOK {
 		t.Errorf("status code: got %v want %v", status, http.StatusOK)
 	}
 }
 func TestLoginUserForm(t *testing.T) {
-	config.InitByMatthias()
+	config.InitForTesting()
 	locations := []string{"Mosbach"}
 	token.CreateAndUpdateTokenMap(locations)
 
@@ -174,25 +173,25 @@ func TestLoginUserForm(t *testing.T) {
 	form.Set("cityName", "Germete")
 	form.Set("streetName", "Am Waldwinkel")
 	form.Set("houseNumber", "12")
-	var timeStamp string = time.Now().Format(time.Stamp)
+	var timeStamp = time.Now().Format(time.RFC3339)
 
-	w := httptest.NewRecorder()
-	r := httptest.NewRequest(http.MethodPost, "/login?token=FPLLNGZIEYOH&location=Mosbach", nil)
-	r.PostForm = form
-	fmt.Printf("form: %#v\n", r.Form)
+	recorder := httptest.NewRecorder()
+	request := httptest.NewRequest(http.MethodPost, "/login?token=FPLLNGZIEYOH&location=Mosbach", nil)
+	request.PostForm = form
+
 	handler := http.HandlerFunc(LoginUser)
-	handler.ServeHTTP(w, r)
+	handler.ServeHTTP(recorder, request)
 
 	var before, _ = ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + time.Now().Format(time.RFC3339)[0:10] + ".txt")
-	beforLine := strings.Split(string(before), "\n")
+	beforeLine := strings.Split(string(before), "\n")
 
 	var check, _ = ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + time.Now().Format(time.RFC3339)[0:10] + ".txt")
-	assert.Equal(t, []byte("LOGIN, " + timeStamp + ", Emil Bartoldus, 34414 Germete Am Waldwinkel 12, NO INFORMATION;\n")[0:4], check[0:4])
+	assert.Equal(t, []byte("LOGIN, " + timeStamp + ", Emil Bartoldus, 34414 Germete Am Waldwinkel 12, NO INFORMATION;\n")[0:3], check[0:3])
 	assert.FileExists(t, flag.Lookup("logfilePath").Value.String()+time.Now().Format(time.RFC3339)[0:10]+".txt")
 	lines := strings.Split(string(check), "\n")
 
 	var data []byte
-	for i := 0; i < len(beforLine)-2; i++ {
+	for i := 0; i < len(beforeLine)-2; i++ {
 		data = append(data, []byte(lines[i]+"\n")...)
 	}
 
@@ -200,7 +199,7 @@ func TestLoginUserForm(t *testing.T) {
 }
 
 func TestLoginUserFormWrongInput(t *testing.T) {
-	config.InitByMatthias()
+	config.InitForTesting()
 	locations := []string{"Mosbach"}
 	token.CreateAndUpdateTokenMap(locations)
 
@@ -212,60 +211,57 @@ func TestLoginUserFormWrongInput(t *testing.T) {
 	form.Set("streetName", "Am Waldwinkel")
 	form.Set("houseNumber", "12")
 
-	w := httptest.NewRecorder()
-	r := httptest.NewRequest(http.MethodPost, "/login?token=FPLLNGZIEYOH&location=Mosbach", nil)
-	r.PostForm = form
-	//r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	recorder := httptest.NewRecorder()
+	request := httptest.NewRequest(http.MethodPost, "/login?token=FPLLNGZIEYOH&location=Mosbach", nil)
+	request.PostForm = form
 
-	//r.PostForm = "firstName=Emil&lastName=Bartoldus&zipCode=34414&cityName=Germete&streetName=Am Waldwinkel&houseNumber=12"
-	fmt.Printf("form: %#v\n", r.Form)
 	handler := http.HandlerFunc(LoginUser)
-	handler.ServeHTTP(w, r)
+	handler.ServeHTTP(recorder, request)
 
 	var before, _ = ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + time.Now().Format(time.RFC3339)[0:10] + ".txt")
-	beforLine := strings.Split(string(before), "\n")
+	beforeLine := strings.Split(string(before), "\n")
 
 	var check, _ = ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + time.Now().Format(time.RFC3339)[0:10] + ".txt")
 	assert.FileExists(t, flag.Lookup("logfilePath").Value.String()+time.Now().Format(time.RFC3339)[0:10]+".txt")
 	lines := strings.Split(string(check), "\n")
 
 	var data []byte
-	for i := 0; i < len(beforLine)-1; i++ {
+	for i := 0; i < len(beforeLine)-1; i++ {
 		data = append(data, []byte(lines[i]+"\n")...)
 	}
 
 	_ = ioutil.WriteFile(flag.Lookup("logfilePath").Value.String()+time.Now().Format(time.RFC3339)[0:10]+".txt", []byte(data), 0644)
 }
 func TestQrCodeCreate(t *testing.T) {
-	config.InitByMatthias()
+	config.InitForTesting()
 
-	req, err := http.NewRequest("GET", "/Mosbach?", nil)
+	request, err := http.NewRequest("GET", "/Mosbach?", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	rr := httptest.NewRecorder()
+	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(QrCodeCreate)
 
-	handler.ServeHTTP(rr, req)
-	if status := rr.Code; status != http.StatusOK {
+	handler.ServeHTTP(recorder, request)
+	if status := recorder.Code; status != http.StatusOK {
 		t.Errorf("status code: got %v want %v", status, http.StatusOK)
 	}
 
-	req, err = http.NewRequest("POST", "/location", nil)
+	request, err = http.NewRequest("POST", "/location", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	handler.ServeHTTP(rr, req)
-	if status := rr.Code; status != http.StatusOK {
+	handler.ServeHTTP(recorder, request)
+	if status := recorder.Code; status != http.StatusOK {
 		t.Errorf("status code: got %v want %v", status, http.StatusOK)
 	}
 
 }
 
 func TestInformationsFromCookies(t *testing.T) {
-	config.InitByMatthias()
+	config.InitForTesting()
 	locations := []string{"Mosbach"}
 	token.CreateAndUpdateTokenMap(locations)
 
@@ -299,7 +295,7 @@ func TestInformationsFromCookies(t *testing.T) {
 }
 func TestProofIfInSameLocation(t *testing.T) {
 	recorder := httptest.NewRecorder()
-	config.InitByMatthias()
+	config.InitForTesting()
 	locations := []string{"Mosbach"}
 	token.CreateAndUpdateTokenMap(locations)
 
@@ -321,7 +317,7 @@ func TestProofIfInSameLocation(t *testing.T) {
 }
 
 /*func TestLoginWithCookies(t *testing.T) {
-	config.InitByMatthias()
+	config.InitForTesting()
 	locations := []string{"Mosbach"}
 	token.CreateAndUpdateTokenMap(locations)
 

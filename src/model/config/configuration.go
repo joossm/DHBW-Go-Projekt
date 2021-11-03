@@ -83,7 +83,7 @@ func GetTokenDuration() time.Duration {
 	return tokenDuration
 }
 
-func InitByMatthias() {
+func InitForTesting() {
 	err := flag.Set("endPagePath", "../../html/endPage.html")
 	if err != nil {
 		return
@@ -105,6 +105,10 @@ func InitByMatthias() {
 		return
 	}
 	err = flag.Set("wrongInputPath", "../../html/wrongInput.html")
+	if err != nil {
+		return
+	}
+	err = flag.Set("certFilePath", "../../server.crt")
 	if err != nil {
 		return
 	}
