@@ -11,17 +11,6 @@ import (
 )
 
 func AnlayzeReport() {
-	/*	fmt.Println(solve(-3, 2, 0.5, yFunc))
-
-		funcSlice := make([]Sum, 10,10)
-
-		for i := 0; i<10; i++{
-			j:=i
-			funcSlice[i]=func(x int) int {return x+j}
-		}
-		fmt.Println(funcSlice[1](0))
-		fmt.Println(funcSlice[5](1))
-	*/
 	fmt.Println("NOTE: All special characters have to be replaced! For Example: ß -> ss, ä ->ae")
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Please enter the day you are looking for. (Date Format: YYYY-MM-DD)")
@@ -74,7 +63,7 @@ func AnlayzeReport() {
 		text, _ = reader.ReadString('\n')
 		text = strings.Replace(text, "\n", "", -1)
 		if placeExists(file, text) {
-			creatCSV(file, text, lookedForDate)
+			createCSV(file, text, lookedForDate)
 		} else {
 			fmt.Println("Place does not exist")
 		}
@@ -195,7 +184,7 @@ func placeExists(file []string, place string) bool {
 	return false
 }
 
-func creatCSV(file []string, place string, lookedForDate string) {
+func createCSV(file []string, place string, lookedForDate string) {
 	csvFile, err := os.Create(lookedForDate + "_" + place + ".csv")
 	if err != nil {
 		panic(err)
