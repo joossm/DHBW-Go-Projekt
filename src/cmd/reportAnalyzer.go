@@ -195,7 +195,10 @@ func createCSV(file []string, place string, lookedForDate string) {
 		if strings.Compare(row[4], place) == 0 && strings.Contains(row[0], "LOGIN") {
 			var newRow []string
 			newRow = append(newRow, row[2], row[3])
-			writer.Write(newRow)
+			err := writer.Write(newRow)
+			if err != nil {
+				return
+			}
 		}
 	}
 	writer.Flush()

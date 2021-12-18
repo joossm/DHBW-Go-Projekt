@@ -195,7 +195,7 @@ func TestLoginUserForm(t *testing.T) {
 		data = append(data, []byte(lines[i]+"\n")...)
 	}
 
-	_ = ioutil.WriteFile(flag.Lookup("logfilePath").Value.String()+time.Now().Format(time.RFC3339)[0:10]+".txt", []byte(data), 0644)
+	_ = ioutil.WriteFile(flag.Lookup("logfilePath").Value.String()+time.Now().Format(time.RFC3339)[0:10]+".txt", data, 0644)
 }
 
 func TestLoginUserFormWrongInput(t *testing.T) {
@@ -230,7 +230,7 @@ func TestLoginUserFormWrongInput(t *testing.T) {
 		data = append(data, []byte(lines[i]+"\n")...)
 	}
 
-	_ = ioutil.WriteFile(flag.Lookup("logfilePath").Value.String()+time.Now().Format(time.RFC3339)[0:10]+".txt", []byte(data), 0644)
+	_ = ioutil.WriteFile(flag.Lookup("logfilePath").Value.String()+time.Now().Format(time.RFC3339)[0:10]+".txt", data, 0644)
 }
 func TestQrCodeCreate(t *testing.T) {
 	config.InitForTesting()

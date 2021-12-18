@@ -57,7 +57,7 @@ func TestLinkFlagsNotNil(t *testing.T) {
 	assert.False(t, flag.Lookup("fileServerUrl") == nil)
 }
 
-//check that flag has the same values as config (ckeck if the flag is reachable)
+//check that flag has the same values as config (check if the flag is reachable)
 //primary Flags
 func TestPrimaryFlagsReachable(t *testing.T) {
 	assert.Equal(t, port1, flag.Lookup("port1").Value.String(), true)

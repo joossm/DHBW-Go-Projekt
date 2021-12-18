@@ -1,11 +1,10 @@
 package main
 
 import (
-	"GoProjekt/src/cmd"
 	"GoProjekt/src/handler"
 	"GoProjekt/src/model"
 	"GoProjekt/src/model/config"
-	token "GoProjekt/src/token"
+	"GoProjekt/src/token"
 	"flag"
 	_ "github.com/skip2/go-qrcode"
 	_ "html/template"
@@ -16,7 +15,7 @@ import (
 )
 
 func main() {
-	cmd.AnlayzeReport()
+	//cmd.AnlayzeReport()
 	var serverMuxA = http.NewServeMux()
 	var serverMuxB = http.NewServeMux()
 

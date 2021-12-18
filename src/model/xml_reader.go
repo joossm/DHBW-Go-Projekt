@@ -25,27 +25,27 @@ func GetList() LocationsList {
 	return locationsList
 }
 
-func (this LocationsList) equals(list LocationsList) bool {
-	lenA := len(this.Locations)
+func (l LocationsList) equals(list LocationsList) bool {
+	lenA := len(l.Locations)
 	lenB := len(list.Locations)
 	if lenA != lenB {
 		return false
 	} else {
 		for i := 0; i < lenA; i++ {
-			if this.Locations[i].Name != list.Locations[i].Name {
+			if l.Locations[i].Name != list.Locations[i].Name {
 				return false
 			}
 		}
 		return true
 	}
 }
-func (this LocationsList) getLength() int {
-	return len(this.Locations)
+func (l LocationsList) getLength() int {
+	return len(l.Locations)
 }
-func (this LocationsList) ToStrings() []string {
+func (l LocationsList) ToStrings() []string {
 	locStrings := make([]string, 0)
-	for i := 0; i < len(this.Locations); i++ {
-		locStrings = append(locStrings, this.Locations[i].Name)
+	for i := 0; i < len(l.Locations); i++ {
+		locStrings = append(locStrings, l.Locations[i].Name)
 	}
 	return locStrings
 }
@@ -69,8 +69,8 @@ func ShowAllLocations() (au *AllLocations) {
 }
 */
 
-func (this LocationsList) ShowAllLoc() []*Location {
-	return this.Locations
+func (l LocationsList) ShowAllLoc() []*Location {
+	return l.Locations
 }
 func init() {
 }
@@ -78,7 +78,12 @@ func init() {
 func ReadXmlFile(path string) LocationsList {
 	xmlFile, err := os.OpenFile(path, os.O_RDWR|os.O_APPEND, 0666)
 	errorHandling(err)
-	defer xmlFile.Close()
+	defer func(xmlFile *os.File) {
+		err := xmlFile.Close()
+		if err != nil {
+
+		}
+	}(xmlFile)
 	byteValue, err := ioutil.ReadAll(xmlFile)
 	err = xml.Unmarshal(byteValue, &locationsList)
 	return locationsList
