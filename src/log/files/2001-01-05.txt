@@ -1,0 +1,7 @@
+LOGOUT, 2001-01-01T01:19:38+01:00, Simon Berberich, 74081 Heilbronn Robert-Bosch-Strasse 23, Mosbach;
+LOGIN, 2001-01-01T11:14:30+01:00, Matthias Jooss, 89150 Laichingen Bei der Kirche 9, Mosbach;
+LOGIN, 2001-01-01T11:15:34+01:00, Simon Berberich, 74081 Heilbronn Robert-Bosch-Strasse 23, Mosbach;
+LOGIN, 2001-01-01T11:16:35+01:00, Emil Bartoldus, 74082 Heilbronn NRW-City 25, Mosbach;
+LOGOUT, 2001-01-01T11:17:36+01:00, Emil Bartoldus, 74082 Heilbronn NRW-City 25, Mosbach;
+LOGOUT, 2001-01-01T11:18:37+01:00, Simon Berberich, 74081 Heilbronn Robert-Bosch-Strasse 23, Mosbach;
+LOGOUT, 2001-01-01T11:19:38+01:00, Matthias Jooss, 89150 Laichingen Bei der Kirche 9, Mosbach;

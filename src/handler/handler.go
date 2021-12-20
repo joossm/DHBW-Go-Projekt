@@ -14,6 +14,7 @@ import (
 	_ "strings"
 )
 
+// Handler struct for handling requests which should create a QR code
 func QrCodeCreate(responseWriter http.ResponseWriter, request *http.Request) {
 	if request.Method == "GET" {
 		log.Println(urlBuilder(request))

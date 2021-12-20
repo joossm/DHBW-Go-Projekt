@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GoProjekt/src/analyzer"
 	"GoProjekt/src/handler"
 	"GoProjekt/src/model"
 	"GoProjekt/src/model/config"
@@ -15,7 +16,7 @@ import (
 )
 
 func main() {
-	//cmd.AnlayzeReport()
+	analyzer.AnlayzeReport()
 	var serverMuxA = http.NewServeMux()
 	var serverMuxB = http.NewServeMux()
 
