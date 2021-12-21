@@ -5,6 +5,7 @@
 package analyzer
 
 import (
+	"GoProjekt/viewmodel/config"
 	"flag"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
@@ -14,19 +15,8 @@ import (
 	"time"
 )
 
-func InitForTesting() {
-	err := flag.Set("logfilePath", "../../model/log/files/")
-	if err != nil {
-		return
-	}
-	err = flag.Set("certFilePath", "../../server.crt")
-	if err != nil {
-		return
-	}
-}
-
 func TestValidateDateFormat(t *testing.T) {
-	InitForTesting()
+	config.InitForTesting()
 	assert.Equal(t, false, validDateFormat("01/01/2019"))
 	assert.Equal(t, false, validDateFormat("01-01-2019"))
 	assert.Equal(t, false, validDateFormat("01.01.2019"))
@@ -51,7 +41,7 @@ func TestNewContactCheck(t *testing.T) {
 }
 
 func TestCreateCSV(t *testing.T) {
-	InitForTesting()
+	config.InitForTesting()
 
 	var fileN = fileTest()
 	createCSV(fileN, "Mosbach", "2001-01-01")
@@ -62,7 +52,8 @@ func TestCreateCSV(t *testing.T) {
 }
 
 func TestFindStartEndTimes(t *testing.T) {
-	InitForTesting()
+	config.InitForTesting()
+
 	file, err := ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + "2001-01-01" + ".txt")
 	if err != nil {
 		panic(err)
@@ -114,7 +105,8 @@ func TestFindStartEndTimes(t *testing.T) {
 }
 
 func TestFindVisitor(t *testing.T) {
-	InitForTesting()
+	config.InitForTesting()
+
 	file, err := ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + "2001-01-01" + ".txt")
 	if err != nil {
 		panic(err)
@@ -131,7 +123,8 @@ func TestFindVisitor(t *testing.T) {
 }
 
 func TestReadFileToStrings(t *testing.T) {
-	InitForTesting()
+	config.InitForTesting()
+
 	var list []string
 
 	list = readFileToStrings("2001-01-01")
@@ -144,7 +137,8 @@ func TestReadFileToStrings(t *testing.T) {
 }
 
 func TestPersonExisits(t *testing.T) {
-	InitForTesting()
+	config.InitForTesting()
+
 	var list []string
 	list = readFileToStrings("2001-01-01")
 	assert.Equal(t, true, personExists(list, "Max Mustermann", "89150 Laichingen Bei der Kirche 9"))
@@ -155,7 +149,8 @@ func TestPersonExisits(t *testing.T) {
 }
 
 func TestCalcContactTime(t *testing.T) {
-	InitForTesting()
+	config.InitForTesting()
+
 	file, err := ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + "2001-01-06" + ".txt")
 	if err != nil {
 		panic(err)
@@ -196,7 +191,8 @@ func TestCalcContactTime(t *testing.T) {
 	assert.Equal(t, false, calcContactTime(startTime2, endTime2, startIndex2, endIndex2, startTime2, endTime2, startIndex2, endIndex2, "Max Mustermann"))
 }
 func TestPlaceExisits(t *testing.T) {
-	InitForTesting()
+	config.InitForTesting()
+
 	var list []string
 	list = readFileToStrings("2001-01-01")
 	assert.Equal(t, true, placeExists(list, "Mosbach"))
@@ -205,7 +201,8 @@ func TestPlaceExisits(t *testing.T) {
 	assert.Equal(t, false, placeExists(list, "Moskau"))
 }
 func TestPlacesOfPersons(t *testing.T) {
-	InitForTesting()
+	config.InitForTesting()
+
 	var list []string
 	list = readFileToStrings("2001-01-01")
 	placesOfPerson := findPlacesOfPerson(list, "Manuel Neuer", "74081 Heilbronn Robert-Bosch-Strasse 23")
@@ -214,7 +211,8 @@ func TestPlacesOfPersons(t *testing.T) {
 }
 
 func TestFindPossibleContacts(t *testing.T) {
-	InitForTesting()
+	config.InitForTesting()
+
 	var list []string
 	list = readFileToStrings("2001-01-01")
 	assert.Equal(t, true, findPossibleContacts("Mosbach", "Manuel Neuer", "74081 Heilbronn Robert-Bosch-Strasse 23", list))
