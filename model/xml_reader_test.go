@@ -5,6 +5,7 @@
 package model
 
 import (
+	"flag"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -56,7 +57,11 @@ func TestLocationsList_ShowAllLoc(t *testing.T) {
 }
 
 func TestRead(t *testing.T) {
-	loc := ReadXmlFile("../../assets/locations.xml")
+	err := flag.Set("xmlPath", "assets/locations.xml")
+	if err != nil {
+		return
+	}
+	loc := ReadXmlFile(flag.Lookup("xmlPath").Value.String())
 	assert.True(t, loc.getLength() > 0)
 	assert.True(t, loc.Locations[3].Name == "Warburg")
 	for i := 0; i < len(loc.Locations); i++ {
@@ -64,7 +69,11 @@ func TestRead(t *testing.T) {
 	}
 }
 func TestGetList(t *testing.T) {
-	ReadXmlFile("../../assets/locations.xml")
+	err := flag.Set("xmlPath", "assets/locations.xml")
+	if err != nil {
+		return
+	}
+	ReadXmlFile(flag.Lookup("xmlPath").Value.String())
 	assert.Equal(t, GetList().Locations[0].Name == "Mosbach", true)
 	assert.Equal(t, GetList().Locations[1].Name == "Dresden", true)
 }

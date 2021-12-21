@@ -96,13 +96,13 @@ func TestLinkFlagsReachable(t *testing.T) {
 }
 
 func TestInitForTesting(t *testing.T) {
-	assert.False(t, flag.Lookup("endPagePath").Value.String() == "../../html/reLoginPage.html")
-	assert.False(t, flag.Lookup("loginPagePath").Value.String() == "../../html/loginPage.html")
-	assert.False(t, flag.Lookup("logoutPagePath").Value.String() == "../../html/logoutPage.html")
+	assert.False(t, flag.Lookup("endPagePath").Value.String() == "../../view/reLoginPage.html")
+	assert.False(t, flag.Lookup("loginPagePath").Value.String() == "../../view/loginPage.html")
+	assert.False(t, flag.Lookup("logoutPagePath").Value.String() == "../../view/logoutPage.html")
 	InitForTesting()
-	assert.True(t, flag.Lookup("endPagePath").Value.String() == "../../html/reLoginPage.html")
-	assert.True(t, flag.Lookup("loginPagePath").Value.String() == "../../html/loginPage.html")
-	assert.True(t, flag.Lookup("logoutPagePath").Value.String() == "../../html/logoutPage.html")
+	assert.True(t, flag.Lookup("endPagePath").Value.String() == "../../view/reLoginPage.html")
+	assert.True(t, flag.Lookup("loginPagePath").Value.String() == "../../view/loginPage.html")
+	assert.True(t, flag.Lookup("logoutPagePath").Value.String() == "../../view/logoutPage.html")
 
 }
 

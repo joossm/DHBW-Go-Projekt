@@ -5,9 +5,9 @@
 package handler
 
 import (
-	report "GoProjekt/src/log"
-	"GoProjekt/src/model"
-	"GoProjekt/src/token"
+	"GoProjekt/model"
+	report "GoProjekt/model/log"
+	"GoProjekt/viewmodel/token"
 	"flag"
 	"fmt"
 	"github.com/skip2/go-qrcode"
@@ -18,7 +18,7 @@ import (
 	_ "strings"
 )
 
-// Handler struct for handling requests which should create a QR code
+// QrCodeCreate Handler struct for handling requests which should create a QR code
 func QrCodeCreate(responseWriter http.ResponseWriter, request *http.Request) {
 	if request.Method == "GET" {
 		log.Println(urlBuilder(request))
@@ -26,7 +26,7 @@ func QrCodeCreate(responseWriter http.ResponseWriter, request *http.Request) {
 		var filename = flag.Lookup("qrCodePath").Value.String() + getLocation(request) + ".png"
 		_ = qrcode.WriteFile(urlBuilder(request), qrcode.Medium, 256, filename)
 		responseWriter.Header().Set("Content-Type", "text/html; charset=utf-8")
-		AddForm := "<head><title>QR Code " + getLocation(request) + "</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><div style=\"text-align: center;\"><br><br><br><br><br><br><br><br><h1>" + getLocation(request) + "</h1><br><br><br><br><img alt=\"" + urlBuilder(request) + "\" src=\"html/qrCodes/" + getLocation(request) + ".png\"></div><body>"
+		AddForm := "<head><title>QR Code " + getLocation(request) + "</title><meta http-equiv=\"refresh\" content=\"5\"></head><body><div style=\"text-align: center;\"><br><br><br><br><br><br><br><br><h1>" + getLocation(request) + "</h1><br><br><br><br><img alt=\"" + urlBuilder(request) + "\" src=\"view/qrCodes/" + getLocation(request) + ".png\"></div><body>"
 		_, err := fmt.Fprint(responseWriter, AddForm)
 		if err != nil {
 			return

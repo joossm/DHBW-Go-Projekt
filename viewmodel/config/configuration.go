@@ -34,22 +34,13 @@ var qrCodePath string
 //Other Paths
 func init() {
 	SetPrimaryFlags("8443", "8444", 5*time.Minute)
-	SetFlagsForPaths("src/log/files/", "html/logoutPage.html", "html/loginPage.html",
-		"html/reLoginPage.html", "html/locationOverview.html", "html/wrongInput.html",
-		"server.crt", "server.key", "./html/", "html/qrCodes/", "assets/locations.xml")
-	SetFlagsForLinks("/", "/login", "/logout", "/location", "/end", "/html/")
-}
 
-//TODO change Paths for Tests
-/*
-func InitForTest() {
-	SetPrimaryFlags("8443", "8444", 5*time.Minute)
-	SetFlagsForPaths("src/log/files/", "html/logoutPage.html", "html/loginPage.html",
-		"html/reLoginPage.html", "html/locationOverview.html", "html/wrongInput.html",
-		"server.crt", "server.key", "./html/", "html/qrCodes/", "assets/locations.xml")
-	SetFlagsForLinks("/", "/login", "/logout", "/location", "/end", "/html/")
+	SetFlagsForPaths("model/log/files/", "view/logoutPage.html", "view/loginPage.html",
+		"view/reLoginPage.html", "view/locationOverview.html", "view/wrongInput.html",
+		"server.crt", "server.key", "./view/", "view/qrCodes/", "model/assets/locations.xml")
+
+	SetFlagsForLinks("/", "/login", "/logout", "/location", "/end", "/view/")
 }
-*/
 
 //SetPrimaryFlags sets the flags for both servers and the token duration
 func SetPrimaryFlags(pPort1 string, pPort2 string, pTokenDur time.Duration) {
@@ -64,11 +55,11 @@ func SetFlagsForPaths(pLogfilePath string, pLogoutPagePath string, pLoginPagePat
 	pLocationOverviewPath string, pWrongInputPath string, pCertFilePath string,
 	pKeyFilePath string, pFileServerPath string, pQrCodePath string, pXmlPath string) {
 	flag.StringVar(&logfilePath, "logfilePath", pLogfilePath, "Where the logs are stored")
-	flag.StringVar(&logoutPagePath, "logoutPagePath", pLogoutPagePath, "Where the logout.html is stored")
-	flag.StringVar(&loginPagePath, "loginPagePath", pLoginPagePath, "Where the login.html is stored")
-	flag.StringVar(&endPagePath, "endPagePath", pEndPagePath, "Where the end.html is stored")
-	flag.StringVar(&locationOverviewPath, "locationOverviewPath", pLocationOverviewPath, "Where the locationOverview.html is stored")
-	flag.StringVar(&wrongInputPath, "wrongInputPath", pWrongInputPath, "Where the wrongInput.html is stored")
+	flag.StringVar(&logoutPagePath, "logoutPagePath", pLogoutPagePath, "Where the logout.view is stored")
+	flag.StringVar(&loginPagePath, "loginPagePath", pLoginPagePath, "Where the login.view is stored")
+	flag.StringVar(&endPagePath, "endPagePath", pEndPagePath, "Where the end.view is stored")
+	flag.StringVar(&locationOverviewPath, "locationOverviewPath", pLocationOverviewPath, "Where the locationOverview.view is stored")
+	flag.StringVar(&wrongInputPath, "wrongInputPath", pWrongInputPath, "Where the wrongInput.view is stored")
 	flag.StringVar(&certFilePath, "certFilePath", pCertFilePath, "Where the certFile is stored")
 	flag.StringVar(&keyFilePath, "keyFilePath", pKeyFilePath, "Where the keyFile is stored")
 	flag.StringVar(&fileServerPath, "fileServerPath", pFileServerPath, "Where the fileServer is stored")
@@ -97,29 +88,29 @@ func GetTokenDuration() time.Duration {
 	return tokenDuration
 }
 
-// InitForTesting initializes the flags for testing, because the file locations need to be addressed diffrently
+// InitForTesting initializes the flags for testing, because the file locations need to be addressed differently
 func InitForTesting() {
-	err := flag.Set("endPagePath", "../../html/reLoginPage.html")
+	err := flag.Set("endPagePath", "../../view/reLoginPage.html")
 	if err != nil {
 		return
 	}
-	err = flag.Set("loginPagePath", "../../html/loginPage.html")
+	err = flag.Set("loginPagePath", "../../view/loginPage.html")
 	if err != nil {
 		return
 	}
-	err = flag.Set("logoutPagePath", "../../html/logoutPage.html")
+	err = flag.Set("logoutPagePath", "../../view/logoutPage.html")
 	if err != nil {
 		return
 	}
-	err = flag.Set("logfilePath", "../../src/log/files/")
+	err = flag.Set("logfilePath", "../../model/log/files/")
 	if err != nil {
 		return
 	}
-	err = flag.Set("locationOverviewPath", "../../html/locationOverview.html")
+	err = flag.Set("locationOverviewPath", "../../view/locationOverview.html")
 	if err != nil {
 		return
 	}
-	err = flag.Set("wrongInputPath", "../../html/wrongInput.html")
+	err = flag.Set("wrongInputPath", "../../view/wrongInput.html")
 	if err != nil {
 		return
 	}

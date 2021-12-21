@@ -14,7 +14,19 @@ import (
 	"time"
 )
 
+func InitForTesting() {
+	err := flag.Set("logfilePath", "../../model/log/files/")
+	if err != nil {
+		return
+	}
+	err = flag.Set("certFilePath", "../../server.crt")
+	if err != nil {
+		return
+	}
+}
+
 func TestValidateDateFormat(t *testing.T) {
+	InitForTesting()
 	assert.Equal(t, false, validDateFormat("01/01/2019"))
 	assert.Equal(t, false, validDateFormat("01-01-2019"))
 	assert.Equal(t, false, validDateFormat("01.01.2019"))
@@ -43,10 +55,10 @@ func TestCreateCSV(t *testing.T) {
 
 	var fileN = fileTest()
 	createCSV(fileN, "Mosbach", "2001-01-01")
-	assert.FileExists(t, "../../src/log/files/2001-01-01_Mosbach.csv")
+	assert.FileExists(t, flag.Lookup("logfilePath").Value.String()+"2001-01-01_Mosbach.csv")
 	assert.Equal(t, true, fileExists("2001-01-01"))
 	assert.Equal(t, false, fileExists("../../party.go"))
-	_ = os.Remove("../../src/log/files/2001-01-01_Mosbach.csv")
+	_ = os.Remove(flag.Lookup("logfilePath").Value.String() + "2001-01-01_Mosbach.csv")
 }
 
 func TestFindStartEndTimes(t *testing.T) {
@@ -99,48 +111,6 @@ func TestFindStartEndTimes(t *testing.T) {
 	assert.Equal(t, -1, startIndex[0])
 	assert.Equal(t, 0, endIndex[0])
 
-}
-
-func InitForTesting() {
-	err := flag.Set("endPagePath", "../../html/reLoginPage.html")
-	if err != nil {
-		return
-	}
-	err = flag.Set("loginPagePath", "../../html/loginPage.html")
-	if err != nil {
-		return
-	}
-	err = flag.Set("logoutPagePath", "../../html/logoutPage.html")
-	if err != nil {
-		return
-	}
-	err = flag.Set("logfilePath", "../../src/log/files/")
-	if err != nil {
-		return
-	}
-	err = flag.Set("locationOverviewPath", "../../html/locationOverview.html")
-	if err != nil {
-		return
-	}
-	err = flag.Set("wrongInputPath", "../../html/wrongInput.html")
-	if err != nil {
-		return
-	}
-	err = flag.Set("certFilePath", "../../server.crt")
-	if err != nil {
-		return
-	}
-}
-
-func fileTest() []string {
-	var file [6]string
-	file[0] = "LOGIN, 2001-01-01T11:14:30+01:00, Max Mustermann, 89150 Laichingen Bei der Kirche 9, Mosbach;\n"
-	file[1] = "LOGIN, 2001-01-01T11:15:34+01:00, Manuel Neuer, 74081 Heilbronn Robert-Bosch-Strasse 23, Mosbach;\n"
-	file[2] = "LOGIN, 2001-01-01T11:16:35+01:00, Serge Gnabry, 74082 Heilbronn NRW-City 25, Mosbach;\n"
-	file[3] = "LOGOUT, 2001-01-01T11:17:36+01:00, Serge Gnabry, 74082 Heilbronn NRW-City 25, Mosbach;\n"
-	file[4] = "LOGOUT, 2001-01-01T11:18:37+01:00, Manuel Neuer, 74081 Heilbronn Robert-Bosch-Strasse 23, Mosbach;\n"
-	file[5] = "LOGOUT, 2001-01-01T11:19:38+01:00, Max Mustermann, 89150 Laichingen Bei der Kirche 9, Mosbach;\n"
-	return file[0:6]
 }
 
 func TestFindVisitor(t *testing.T) {
@@ -249,4 +219,15 @@ func TestFindPossibleContacts(t *testing.T) {
 	list = readFileToStrings("2001-01-01")
 	assert.Equal(t, true, findPossibleContacts("Mosbach", "Manuel Neuer", "74081 Heilbronn Robert-Bosch-Strasse 23", list))
 	assert.Equal(t, false, findPossibleContacts("Mosbach", "Max Berberich", "74081 Heilbronn Robert-Bosch-Strasse 23", list))
+}
+
+func fileTest() []string {
+	var file [6]string
+	file[0] = "LOGIN, 2001-01-01T11:14:30+01:00, Max Mustermann, 89150 Laichingen Bei der Kirche 9, Mosbach;\n"
+	file[1] = "LOGIN, 2001-01-01T11:15:34+01:00, Manuel Neuer, 74081 Heilbronn Robert-Bosch-Strasse 23, Mosbach;\n"
+	file[2] = "LOGIN, 2001-01-01T11:16:35+01:00, Serge Gnabry, 74082 Heilbronn NRW-City 25, Mosbach;\n"
+	file[3] = "LOGOUT, 2001-01-01T11:17:36+01:00, Serge Gnabry, 74082 Heilbronn NRW-City 25, Mosbach;\n"
+	file[4] = "LOGOUT, 2001-01-01T11:18:37+01:00, Manuel Neuer, 74081 Heilbronn Robert-Bosch-Strasse 23, Mosbach;\n"
+	file[5] = "LOGOUT, 2001-01-01T11:19:38+01:00, Max Mustermann, 89150 Laichingen Bei der Kirche 9, Mosbach;\n"
+	return file[0:6]
 }

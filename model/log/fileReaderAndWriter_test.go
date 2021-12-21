@@ -5,7 +5,7 @@
 package log
 
 import (
-	"GoProjekt/src/model/config"
+	"GoProjekt/viewmodel/config"
 	"flag"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
@@ -52,7 +52,7 @@ func TestWriteToFile(t *testing.T) {
 	WriteToFile(true, "Test")
 	var check, _ = ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + getDateInFormat() + ".txt")
 	assert.Equal(t, []byte("LOGIN, 2021-10-29T14:33:59+02:00, test;\n")[0:3], check[0:3])
-	assert.FileExists(t, "../../src/log/files/"+getDateInFormat()+".txt")
+	assert.FileExists(t, flag.Lookup("logfilePath").Value.String()+getDateInFormat()+".txt")
 	lines := strings.Split(string(check), "\n")
 	var data []byte
 

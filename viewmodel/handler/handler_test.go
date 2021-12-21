@@ -5,8 +5,8 @@
 package handler
 
 import (
-	"GoProjekt/src/model/config"
-	"GoProjekt/src/token"
+	"GoProjekt/viewmodel/config"
+	"GoProjekt/viewmodel/token"
 	"flag"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
