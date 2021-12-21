@@ -57,7 +57,7 @@ func TestLinkFlagsNotNil(t *testing.T) {
 	assert.False(t, flag.Lookup("loginUrl") == nil)
 	assert.False(t, flag.Lookup("logoutUrl") == nil)
 	assert.False(t, flag.Lookup("locationUrl") == nil)
-	assert.False(t, flag.Lookup("endUrl") == nil)
+	assert.False(t, flag.Lookup("reloginUrl") == nil)
 	assert.False(t, flag.Lookup("fileServerUrl") == nil)
 }
 
@@ -91,7 +91,7 @@ func TestLinkFlagsReachable(t *testing.T) {
 	assert.Equal(t, loginUrl, flag.Lookup("loginUrl").Value.String(), true)
 	assert.Equal(t, logoutUrl, flag.Lookup("logoutUrl").Value.String(), true)
 	assert.Equal(t, locationUrl, flag.Lookup("locationUrl").Value.String(), true)
-	assert.Equal(t, endUrl, flag.Lookup("endUrl").Value.String(), true)
+	assert.Equal(t, reloginUrl, flag.Lookup("reloginUrl").Value.String(), true)
 	assert.Equal(t, fileServerUrl, flag.Lookup("fileServerUrl").Value.String(), true)
 }
 

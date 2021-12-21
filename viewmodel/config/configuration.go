@@ -16,7 +16,7 @@ var xmlPath string
 
 var standardUrl string
 var loginUrl string
-var endUrl string
+var reloginUrl string
 var locationUrl string
 var logoutUrl string
 var fileServerUrl string
@@ -40,7 +40,7 @@ func init() {
 		"server.crt", "server.key", "./view/", "view/qrCodes/", "model/assets/locations.xml")
 
 	SetFlagsForLinks("/", "/login", "/logout", "/location", "/end", "/view/")
-	flag.Parse()
+
 }
 
 //SetPrimaryFlags sets the flags for both servers and the token duration
@@ -70,12 +70,12 @@ func SetFlagsForPaths(pLogfilePath string, pLogoutPagePath string, pLoginPagePat
 
 // SetFlagsForLinks sets the flags for the links in the server
 func SetFlagsForLinks(pStandardUrl string, pLoginUrl string, pLogoutUrl string, pLocationUrl string,
-	pEndUrl string, pFileServerUrl string) {
+	pReLoginUrl string, pFileServerUrl string) {
 	flag.StringVar(&standardUrl, "standardUrl", pStandardUrl, "Where the login Page is accessible")
 	flag.StringVar(&loginUrl, "loginUrl", pLoginUrl, "Where the login Page is accessible")
 	flag.StringVar(&logoutUrl, "logoutUrl", pLogoutUrl, "Where the logout Page is accessible")
 	flag.StringVar(&locationUrl, "locationUrl", pLocationUrl, "Where the location overview Page is accessible")
-	flag.StringVar(&endUrl, "endUrl", pEndUrl, "Where the end Page is accessible")
+	flag.StringVar(&reloginUrl, "reloginUrl", pReLoginUrl, "Where the re login Page is accessible")
 	flag.StringVar(&fileServerUrl, "fileServerUrl", pFileServerUrl, "Where the end Page is accessible")
 }
 

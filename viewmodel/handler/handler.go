@@ -138,7 +138,7 @@ func LogoutUser(responseWriter http.ResponseWriter, request *http.Request) {
 		var address = informationsFromCookies("address", request)
 		var location = informationsFromCookies("location", request)
 		report.WriteToFile(false, combineText(name, address, location))
-		http.Redirect(responseWriter, request, flag.Lookup("endUrl").Value.String(), 301)
+		http.Redirect(responseWriter, request, flag.Lookup("reloginUrl").Value.String(), 301)
 	}
 }
 
@@ -147,7 +147,7 @@ func ReLogin(responseWriter http.ResponseWriter, request *http.Request) {
 	if request.Method == "GET" {
 		parseAndExecuteWebsite(flag.Lookup("endPagePath").Value.String(), responseWriter, nil)
 	} else {
-		http.Redirect(responseWriter, request, flag.Lookup("endUrl").Value.String(), 301)
+		http.Redirect(responseWriter, request, flag.Lookup("reloginUrl").Value.String(), 301)
 	}
 }
 

@@ -21,6 +21,7 @@ import (
 )
 
 func main() {
+	flag.Parse()
 	// read command line arguments
 	println("Please choose a mode:\n 1. Analyzer\n 2. Server\n")
 	reader := bufio.NewReader(os.Stdin)
@@ -50,7 +51,7 @@ func main() {
 
 		// initialize the serverMuxA with all the handlers
 		serverMuxA.Handle(flag.Lookup("fileServerUrl").Value.String(), http.StripPrefix("/view", fileServer))
-		serverMuxA.HandleFunc(flag.Lookup("endUrl").Value.String(), handler.ReLogin)
+		serverMuxA.HandleFunc(flag.Lookup("reloginUrl").Value.String(), handler.ReLogin)
 		serverMuxA.HandleFunc(flag.Lookup("loginUrl").Value.String(), handler.LoginUser)
 		serverMuxA.HandleFunc(flag.Lookup("logoutUrl").Value.String(), handler.LogoutUser)
 		serverMuxA.HandleFunc(flag.Lookup("locationUrl").Value.String(), handler.SelectLocation)
