@@ -1,3 +1,7 @@
+// 5807262
+// 9899545
+// 8622410
+
 package analyzer
 
 import (
@@ -12,6 +16,7 @@ import (
 	"time"
 )
 
+// AnlayzeReport is the main struct for the analyzer
 func AnlayzeReport() {
 	fmt.Println("NOTE: All special characters have to be replaced! For Example: ß -> ss, ä ->ae")
 	fmt.Println("Please enter the day you are looking for. (Date Format: YYYY-MM-DD)")
@@ -136,6 +141,7 @@ func fileExists(date string) bool {
 	return true
 }
 
+// Reads the file to a string
 func readFileToStrings(date string) []string {
 	file, err := ioutil.ReadFile(flag.Lookup("logfilePath").Value.String() + date + ".txt")
 	if err != nil {
@@ -148,6 +154,7 @@ func readFileToStrings(date string) []string {
 	return fileString
 }
 
+// Checks if the person exists
 func personExists(file []string, name string, address string) bool {
 	for _, element := range file {
 		row := strings.Split(element, ", ")
@@ -160,6 +167,7 @@ func personExists(file []string, name string, address string) bool {
 	return false
 }
 
+// Finds all places of a person
 func findPlacesOfPerson(file []string, name string, address string) []string {
 	var places []string
 	for _, element := range file {
@@ -181,6 +189,7 @@ func findPlacesOfPerson(file []string, name string, address string) []string {
 	return places
 }
 
+// Checks if the place exists
 func placeExists(file []string, place string) bool {
 	for _, element := range file {
 		row := strings.Split(element, ", ")
@@ -191,6 +200,7 @@ func placeExists(file []string, place string) bool {
 	return false
 }
 
+// creates a CSV-file for a place
 func createCSV(file []string, place string, lookedForDate string) {
 	csvFile, err := os.Create(flag.Lookup("logfilePath").Value.String() + lookedForDate + "_" + place + ".csv")
 	if err != nil {
@@ -215,6 +225,7 @@ func createCSV(file []string, place string, lookedForDate string) {
 	}
 }
 
+// finds all contacts for a person at a specific place
 func findPossibleContacts(place string, name string, address string, file []string) bool {
 	startTimeMainPerson, endTimeMainPerson, startIndexMainPerson, endIndexMainPerson := findStartEndTimes(place, name, address, file)
 	fmt.Printf("Contacts for %v \n", place)
@@ -236,6 +247,7 @@ func findPossibleContacts(place string, name string, address string, file []stri
 	return true
 }
 
+// finds the start and end time of a person at a specific place
 func findStartEndTimes(place string, name string, address string, file []string) ([]time.Time, []time.Time, []int, []int) {
 	var startTime, endTime []time.Time
 	var startIndex, endIndex []int
@@ -302,6 +314,7 @@ func findStartEndTimes(place string, name string, address string, file []string)
 	return startTime, endTime, startIndex, endIndex
 }
 
+// finds all visitors at a specific place
 func findVisitors(place string, file []string, mainPerson string, mainAddress string) []string {
 	var visitorsList []string
 	mainPersonFull := mainPerson + "," + mainAddress
@@ -325,6 +338,7 @@ func findVisitors(place string, file []string, mainPerson string, mainAddress st
 	return visitorsList
 }
 
+// calculates the contact time of two persons
 func calcContactTime(startTimeMainPerson []time.Time, endTimeMainPerson []time.Time, startIndexMainPerson []int, endIndexMainPerson []int, startTimeContact []time.Time, endTimeContact []time.Time, startIndexContact []int, endIndexContact []int, visitor string) bool {
 	newContact := true
 	numberOfContacts := 0
@@ -398,6 +412,8 @@ func calcContactTime(startTimeMainPerson []time.Time, endTimeMainPerson []time.T
 	return contactsExist
 
 }
+
+// checks if a new contact is needed
 func newContactCheck(newContact bool, visitor string) bool {
 	if newContact {
 		fmt.Println("--------------------------")

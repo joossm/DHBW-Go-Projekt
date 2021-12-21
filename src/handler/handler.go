@@ -1,3 +1,7 @@
+// 5807262
+// 9899545
+// 8622410
+
 package handler
 
 import (
@@ -31,6 +35,7 @@ func QrCodeCreate(responseWriter http.ResponseWriter, request *http.Request) {
 	}
 }
 
+// parseAndExcuteWebsite is a function which parses the website and executes the request
 func parseAndExecuteWebsite(filename string, responseWriter http.ResponseWriter, data interface{}) {
 	t, err := template.ParseFiles(filename)
 	errorHandling(err)
@@ -38,6 +43,7 @@ func parseAndExecuteWebsite(filename string, responseWriter http.ResponseWriter,
 	errorHandling(err)
 }
 
+// validateInputNumber is a function which validates all the input which should be numbers of the user
 func validateInputNumber(request *http.Request, forms ...string) (erg bool, str string) {
 	for _, form := range forms {
 		matchString, _ := regexp.MatchString("^[0-9]+$", request.FormValue(form))
@@ -48,6 +54,8 @@ func validateInputNumber(request *http.Request, forms ...string) (erg bool, str 
 	}
 	return true, ""
 }
+
+// validateInputLetter is a function which validates all the input which should be letters of the user
 func validateInputLetter(request *http.Request, forms ...string) (erg bool, str string) {
 	for _, form := range forms {
 		matchString, _ := regexp.MatchString("[a-zA-z- ]+", request.FormValue(form))
@@ -58,6 +66,8 @@ func validateInputLetter(request *http.Request, forms ...string) (erg bool, str 
 	}
 	return true, ""
 }
+
+// LoginUser is a function which checks if the user is logged in, if not it redirects him to the login page
 func LoginUser(responseWriter http.ResponseWriter, request *http.Request) {
 	if alreadyLoggedIn(request) == true {
 		var name = informationsFromCookies("name", request)
@@ -120,6 +130,7 @@ func LoginUser(responseWriter http.ResponseWriter, request *http.Request) {
 	}
 }
 
+// LogoutUser is a function which logs out the user and redirects him to the ReLoginPage
 func LogoutUser(responseWriter http.ResponseWriter, request *http.Request) {
 	if request.Method == "GET" {
 		parseAndExecuteWebsite(flag.Lookup("logoutPagePath").Value.String(), responseWriter, nil)
@@ -132,7 +143,8 @@ func LogoutUser(responseWriter http.ResponseWriter, request *http.Request) {
 	}
 }
 
-func End(responseWriter http.ResponseWriter, request *http.Request) {
+// ReLogin is a function which logs out the user and redirects him to the login page
+func ReLogin(responseWriter http.ResponseWriter, request *http.Request) {
 	if request.Method == "GET" {
 		parseAndExecuteWebsite(flag.Lookup("endPagePath").Value.String(), responseWriter, nil)
 	} else {
@@ -140,6 +152,7 @@ func End(responseWriter http.ResponseWriter, request *http.Request) {
 	}
 }
 
+// SelectLocation is a function which redirects the user to the location page
 func SelectLocation(responseWriter http.ResponseWriter, request *http.Request) {
 	if request.Method == "GET" {
 		locations := model.GetList().ShowAllLoc()
@@ -149,12 +162,14 @@ func SelectLocation(responseWriter http.ResponseWriter, request *http.Request) {
 	}
 }
 
+// errorHandling is a function which handles the error
 func errorHandling(err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
 }
 
+// alreadyLoggedIn is a function which checks if the user is already logged in
 func alreadyLoggedIn(request *http.Request) bool {
 	var loggedInWithName bool
 	var loggedInWithAddress bool
@@ -173,6 +188,7 @@ func alreadyLoggedIn(request *http.Request) bool {
 	}
 }
 
+// informationsFromCookies is a function which returns the informations from the cookies
 func informationsFromCookies(value string, request *http.Request) string {
 	for _, cookie := range request.Cookies() {
 		if cookie.Name == "name" && value == "name" {
@@ -188,10 +204,12 @@ func informationsFromCookies(value string, request *http.Request) string {
 	return "NO INFORMATION"
 }
 
+// combineText is a function which combines the informations
 func combineText(name string, address string, location string) string {
 	return name + ", " + address + ", " + location
 }
 
+// proofIfLoginInSameLocation is a function which checks if the user is logged in, in the same location
 func proofIfLoginInSameLocation(request *http.Request) string {
 	if request.URL.Query().Get("location") != "" {
 		return request.URL.Query().Get("location")
@@ -200,15 +218,19 @@ func proofIfLoginInSameLocation(request *http.Request) string {
 	}
 }
 
+// setCookie is a function which sets the cookie
 func setCookie(responseWriter http.ResponseWriter, name string, value string) {
 	cookieToStore := http.Cookie{Name: name, Value: value}
 	http.SetCookie(responseWriter, &cookieToStore)
 }
 
+// urlBuilder is a function which builds the url
 func urlBuilder(request *http.Request) string {
 
 	return "https://127.0.0.1:8443/login?token=" + token.GetTokenByLocation(getLocation(request)) + "&location=" + getLocation(request)
 }
+
+// getLocation is a function which returns the location
 func getLocation(request *http.Request) string {
 	return request.URL.String()[1 : len(request.URL.String())-1]
 }

@@ -1,3 +1,7 @@
+// 5807262
+// 9899545
+// 8622410
+
 package handler
 
 import (
@@ -118,7 +122,7 @@ func TestEnd(t *testing.T) {
 	}
 
 	recorder := httptest.NewRecorder()
-	handler := http.HandlerFunc(End)
+	handler := http.HandlerFunc(ReLogin)
 
 	handler.ServeHTTP(recorder, request)
 	if status := recorder.Code; status != http.StatusOK {

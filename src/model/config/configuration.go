@@ -1,3 +1,7 @@
+// 5807262
+// 9899545
+// 8622410
+
 package config
 
 import (
@@ -31,7 +35,7 @@ var qrCodePath string
 func init() {
 	SetPrimaryFlags("8443", "8444", 5*time.Minute)
 	SetFlagsForPaths("src/log/files/", "html/logoutPage.html", "html/loginPage.html",
-		"html/endPage.html", "html/locationOverview.html", "html/wrongInput.html",
+		"html/reLoginPage.html", "html/locationOverview.html", "html/wrongInput.html",
 		"server.crt", "server.key", "./html/", "html/qrCodes/", "assets/locations.xml")
 	SetFlagsForLinks("/", "/login", "/logout", "/location", "/end", "/html/")
 }
@@ -41,17 +45,21 @@ func init() {
 func InitForTest() {
 	SetPrimaryFlags("8443", "8444", 5*time.Minute)
 	SetFlagsForPaths("src/log/files/", "html/logoutPage.html", "html/loginPage.html",
-		"html/endPage.html", "html/locationOverview.html", "html/wrongInput.html",
+		"html/reLoginPage.html", "html/locationOverview.html", "html/wrongInput.html",
 		"server.crt", "server.key", "./html/", "html/qrCodes/", "assets/locations.xml")
 	SetFlagsForLinks("/", "/login", "/logout", "/location", "/end", "/html/")
 }
 */
+
+//SetPrimaryFlags sets the flags for both servers and the token duration
 func SetPrimaryFlags(pPort1 string, pPort2 string, pTokenDur time.Duration) {
 	flag.StringVar(&port1, "port1", pPort1, "4-digit number for the port regarding the qrCodeScan")
 	flag.StringVar(&port2, "port2", pPort2, "4-digit number for the login Page")
 	flag.DurationVar(&tokenDuration, "tokenDuration", pTokenDur, "The life duration of the token")
 
 }
+
+// SetFlagsForPaths sets the flags for the paths
 func SetFlagsForPaths(pLogfilePath string, pLogoutPagePath string, pLoginPagePath string, pEndPagePath string,
 	pLocationOverviewPath string, pWrongInputPath string, pCertFilePath string,
 	pKeyFilePath string, pFileServerPath string, pQrCodePath string, pXmlPath string) {
@@ -67,6 +75,8 @@ func SetFlagsForPaths(pLogfilePath string, pLogoutPagePath string, pLoginPagePat
 	flag.StringVar(&qrCodePath, "qrCodePath", pQrCodePath, "Where the fileServer is stored")
 	flag.StringVar(&xmlPath, "xmlPath", pXmlPath, "Path to the xmlFile storing the locations")
 }
+
+// SetFlagsForLinks sets the flags for the links in the server
 func SetFlagsForLinks(pStandardUrl string, pLoginUrl string, pLogoutUrl string, pLocationUrl string,
 	pEndUrl string, pFileServerUrl string) {
 	flag.StringVar(&standardUrl, "standardUrl", pStandardUrl, "Where the login Page is accessible")
@@ -76,15 +86,20 @@ func SetFlagsForLinks(pStandardUrl string, pLoginUrl string, pLogoutUrl string, 
 	flag.StringVar(&endUrl, "endUrl", pEndUrl, "Where the end Page is accessible")
 	flag.StringVar(&fileServerUrl, "fileServerUrl", pFileServerUrl, "Where the end Page is accessible")
 }
+
+// GetPath returns the path
 func GetPath() string {
 	return xmlPath
 }
+
+// GetTokenDuration returns the tokenDuration
 func GetTokenDuration() time.Duration {
 	return tokenDuration
 }
 
+// InitForTesting initializes the flags for testing, because the file locations need to be addressed diffrently
 func InitForTesting() {
-	err := flag.Set("endPagePath", "../../html/endPage.html")
+	err := flag.Set("endPagePath", "../../html/reLoginPage.html")
 	if err != nil {
 		return
 	}

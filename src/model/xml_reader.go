@@ -1,3 +1,7 @@
+// 5807262
+// 9899545
+// 8622410
+
 package model
 
 import (
@@ -17,14 +21,18 @@ type Location struct {
 	XMLName xml.Name `xml:"location"`
 	Name    string   `xml:"name"`
 }
+
+// AllLocations is a struct that contains all the locations
 type AllLocations struct {
 	Location []*Location
 }
 
+// GetList returns a list of all locations
 func GetList() LocationsList {
 	return locationsList
 }
 
+// equals is checking if two lists are equal
 func (l LocationsList) equals(list LocationsList) bool {
 	lenA := len(l.Locations)
 	lenB := len(list.Locations)
@@ -39,9 +47,13 @@ func (l LocationsList) equals(list LocationsList) bool {
 		return true
 	}
 }
+
+// getLength returns the length of the list
 func (l LocationsList) getLength() int {
 	return len(l.Locations)
 }
+
+// ToString returns a string representation of the list
 func (l LocationsList) ToStrings() []string {
 	locStrings := make([]string, 0)
 	for i := 0; i < len(l.Locations); i++ {
@@ -49,12 +61,15 @@ func (l LocationsList) ToStrings() []string {
 	}
 	return locStrings
 }
+
+// error handling
 func errorHandling(err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
 }
 
+// TODO: Neccessary?
 /*
 func ShowAllLocations() (au *AllLocations) {
 	file, err := os.OpenFile(flag.Lookup("xmlPath").Value.String(), os.O_RDWR|os.O_APPEND, 0666)
@@ -69,12 +84,16 @@ func ShowAllLocations() (au *AllLocations) {
 }
 */
 
+// Gets the Locationslist and returns a LocationsArray
 func (l LocationsList) ShowAllLoc() []*Location {
 	return l.Locations
 }
+
+// TODO: Neccessary?
 func init() {
 }
 
+// Reads the XML file and returns a LocationsList
 func ReadXmlFile(path string) LocationsList {
 	xmlFile, err := os.OpenFile(path, os.O_RDWR|os.O_APPEND, 0666)
 	errorHandling(err)

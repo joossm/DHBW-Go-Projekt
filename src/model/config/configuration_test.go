@@ -1,3 +1,7 @@
+// 5807262
+// 9899545
+// 8622410
+
 package config
 
 import (
@@ -92,11 +96,11 @@ func TestLinkFlagsReachable(t *testing.T) {
 }
 
 func TestInitForTesting(t *testing.T) {
-	assert.False(t, flag.Lookup("endPagePath").Value.String() == "../../html/endPage.html")
+	assert.False(t, flag.Lookup("endPagePath").Value.String() == "../../html/reLoginPage.html")
 	assert.False(t, flag.Lookup("loginPagePath").Value.String() == "../../html/loginPage.html")
 	assert.False(t, flag.Lookup("logoutPagePath").Value.String() == "../../html/logoutPage.html")
 	InitForTesting()
-	assert.True(t, flag.Lookup("endPagePath").Value.String() == "../../html/endPage.html")
+	assert.True(t, flag.Lookup("endPagePath").Value.String() == "../../html/reLoginPage.html")
 	assert.True(t, flag.Lookup("loginPagePath").Value.String() == "../../html/loginPage.html")
 	assert.True(t, flag.Lookup("logoutPagePath").Value.String() == "../../html/logoutPage.html")
 
