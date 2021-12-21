@@ -34,7 +34,6 @@ func main() {
 	if runtime.GOOS == "linux" {
 		text = strings.Replace(text, "\n", "", -1)
 	}
-	// TODO questioning the user if he wants to use the Analyzer or start the server
 	if text == "1" {
 		analyzer.AnlayzeReport()
 	} else if text == "2" {
@@ -61,8 +60,6 @@ func main() {
 
 		// initialize the serverMuxB with the fileServer
 		serverMuxB.Handle("/view/", http.StripPrefix("/view", fileServer))
-		// TODO neccessary?
-		//serverMuxB.HandleFunc("/qr", handler.QrCodeCreate)
 
 		// start the TokenUpdater
 		go func() {

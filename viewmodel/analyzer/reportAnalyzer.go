@@ -352,14 +352,14 @@ func calcContactTime(startTimeMainPerson []time.Time, endTimeMainPerson []time.T
 					newContact = newContactCheck(newContact, visitor)
 
 					numberOfContacts++
-					fmt.Printf("Contact %v\n", numberOfContacts)
+					fmt.Printf("Contacts: %v\n", numberOfContacts)
 					fmt.Println(endTimeMainPerson[0].Sub(startTimeMainPerson[0]))
 					contactTime = contactTime.Add(endTimeMainPerson[0].Sub(startTimeMainPerson[0]))
 				} else {
 					newContact = newContactCheck(newContact, visitor)
 
 					numberOfContacts++
-					fmt.Printf("Contact %v\n", numberOfContacts)
+					fmt.Printf("Contacts: %v\n", numberOfContacts)
 					fmt.Println(endTimeContact[0].Sub(startTimeContact[0]))
 					contactTime = contactTime.Add(endTimeContact[0].Sub(startTimeContact[0]))
 				}
@@ -370,14 +370,14 @@ func calcContactTime(startTimeMainPerson []time.Time, endTimeMainPerson []time.T
 
 					//Start Main - end Kontakt
 					numberOfContacts++
-					fmt.Printf("Contact %v\n", numberOfContacts)
+					fmt.Printf("Contacts: %v\n", numberOfContacts)
 					fmt.Println(endTimeContact[newStartIndexContact].Sub(startTimeMainPerson[newStartIndexMainPerson]))
 					contactTime = contactTime.Add(endTimeContact[newStartIndexContact].Sub(startTimeMainPerson[newStartIndexMainPerson]))
 				} else {
 					newContact = newContactCheck(newContact, visitor)
 
 					numberOfContacts++
-					fmt.Printf("Contact %v\n", numberOfContacts)
+					fmt.Printf("Contacts: %v\n", numberOfContacts)
 					//Start Main - end Main
 					fmt.Println(endTimeMainPerson[newStartIndexMainPerson].Sub(startTimeMainPerson[newStartIndexMainPerson]))
 					contactTime = contactTime.Add(endTimeMainPerson[newStartIndexMainPerson].Sub(startTimeMainPerson[newStartIndexMainPerson]))
@@ -387,14 +387,14 @@ func calcContactTime(startTimeMainPerson []time.Time, endTimeMainPerson []time.T
 				if endIndexContact[newStartIndexContact] <= endIndexMainPerson[newStartIndexMainPerson] {
 					newContact = newContactCheck(newContact, visitor)
 					numberOfContacts++
-					fmt.Printf("Contact %v\n", numberOfContacts)
+					fmt.Printf("Contacts: %v\n", numberOfContacts)
 					fmt.Println(endTimeContact[newStartIndexContact].Sub(startTimeContact[newStartIndexContact]))
 					//Start Kontakt - end kontakt
 					contactTime = contactTime.Add(endTimeContact[newStartIndexContact].Sub(startTimeContact[newStartIndexContact]))
 				} else {
 					newContact = newContactCheck(newContact, visitor)
 					numberOfContacts++
-					fmt.Printf("Contact %v\n", numberOfContacts)
+					fmt.Printf("Contacts: %v\n", numberOfContacts)
 					fmt.Println(endTimeMainPerson[newStartIndexMainPerson].Sub(startTimeContact[newStartIndexContact]))
 					//Start Kontakt - end Main
 					contactTime = contactTime.Add(endTimeMainPerson[newStartIndexMainPerson].Sub(startTimeContact[newStartIndexContact]))

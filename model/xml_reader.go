@@ -69,28 +69,9 @@ func errorHandling(err error) {
 	}
 }
 
-// TODO: Neccessary?
-/*
-func ShowAllLocations() (au *AllLocations) {
-	file, err := os.OpenFile(flag.Lookup("xmlPath").Value.String(), os.O_RDWR|os.O_APPEND, 0666)
-	errorHandling(err)
-	all, err := ioutil.ReadAll(file)
-	var allLoc AllLocations
-	err = xml.Unmarshal(all, &allLoc.Location)
-	if err != nil {
-		return nil
-	}
-	return &allLoc
-}
-*/
-
 // Gets the Locationslist and returns a LocationsArray
 func (l LocationsList) ShowAllLoc() []*Location {
 	return l.Locations
-}
-
-// TODO: Neccessary?
-func init() {
 }
 
 // Reads the XML file and returns a LocationsList
