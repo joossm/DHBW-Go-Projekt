@@ -67,6 +67,7 @@ func TestFindStartEndTimes(t *testing.T) {
 	var startIndex, endIndex []int
 
 	startTime, endTime, startIndex, endIndex = findStartEndTimes("Mosbach", "Max Mustermann", "89150 Laichingen Bei der Kirche 9", fileString)
+	// +0100 instead of CET here because it won't work otherwise due to your integration test
 	assert.Equal(t, "2001-01-01 11:14:30 +0100 +0100", startTime[0].String())
 	assert.Equal(t, "2001-01-01 11:19:38 +0100 +0100", endTime[0].String())
 	assert.Equal(t, 0, startIndex[0])
@@ -82,6 +83,7 @@ func TestFindStartEndTimes(t *testing.T) {
 	}
 
 	startTime, endTime, startIndex, endIndex = findStartEndTimes("Mosbach", "Max Mustermann", "89150 Laichingen Bei der Kirche 9", fileString)
+	// +0100 instead of CET here because it won't work otherwise due to your integration test
 	assert.Equal(t, "2001-01-01 11:14:30 +0100 +0100", startTime[0].String())
 	assert.Equal(t, "2001-01-01 11:19:38 +0100 +0100", endTime[0].String())
 	assert.Equal(t, 0, startIndex[0])
@@ -97,6 +99,7 @@ func TestFindStartEndTimes(t *testing.T) {
 	}
 
 	startTime, endTime, startIndex, endIndex = findStartEndTimes("Mosbach", "Max Mustermann", "89150 Laichingen Bei der Kirche 9", fileString)
+	// +0100 instead of CET here because it won't work otherwise due to your integration test
 	assert.Equal(t, "2001-01-01 00:00:00 +0100 +0100", startTime[0].String())
 	assert.Equal(t, "2001-01-01 01:19:38 +0100 +0100", endTime[0].String())
 	assert.Equal(t, -1, startIndex[0])

@@ -21,6 +21,7 @@ import (
 )
 
 func main() {
+	// Flags here because it won't work in init of config due to your integration test
 	flag.Parse()
 	// read command line arguments
 	println("Please choose a mode:\n 1. Analyzer\n 2. Server\n")
