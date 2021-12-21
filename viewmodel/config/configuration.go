@@ -118,4 +118,8 @@ func InitForTesting() {
 	if err != nil {
 		return
 	}
+	err = flag.Set("xmlPath", "assets/locations.xml")
+	if err != nil {
+		return
+	}
 }

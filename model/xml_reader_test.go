@@ -5,6 +5,7 @@
 package model
 
 import (
+	"GoProjekt/viewmodel/config"
 	"flag"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -56,11 +57,8 @@ func TestLocationsList_ShowAllLoc(t *testing.T) {
 	assert.False(t, list.Locations[1] == list.ShowAllLoc()[0])
 }
 
-func TestRead(t *testing.T) {
-	err := flag.Set("xmlPath", "assets/locations.xml")
-	if err != nil {
-		return
-	}
+func TestReadXmlFile(t *testing.T) {
+	config.InitForTesting()
 	loc := ReadXmlFile(flag.Lookup("xmlPath").Value.String())
 	assert.True(t, loc.getLength() > 0)
 	assert.True(t, loc.Locations[3].Name == "Warburg")
@@ -69,10 +67,7 @@ func TestRead(t *testing.T) {
 	}
 }
 func TestGetList(t *testing.T) {
-	err := flag.Set("xmlPath", "assets/locations.xml")
-	if err != nil {
-		return
-	}
+	config.InitForTesting()
 	ReadXmlFile(flag.Lookup("xmlPath").Value.String())
 	assert.Equal(t, GetList().Locations[0].Name == "Mosbach", true)
 	assert.Equal(t, GetList().Locations[1].Name == "Dresden", true)
