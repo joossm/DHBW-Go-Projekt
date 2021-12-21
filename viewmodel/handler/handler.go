@@ -15,7 +15,6 @@ import (
 	"log"
 	"net/http"
 	"regexp"
-	_ "strings"
 )
 
 // QrCodeCreate Handler struct for handling requests which should create a QR code

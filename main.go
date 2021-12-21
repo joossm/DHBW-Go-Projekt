@@ -12,15 +12,12 @@ import (
 	"GoProjekt/viewmodel/token"
 	"bufio"
 	"flag"
-	_ "github.com/skip2/go-qrcode"
-	_ "html/template"
 	"log"
 	"net/http"
 	"os"
 	"runtime"
 	"strings"
 	"time"
-	_ "time"
 )
 
 func main() {
