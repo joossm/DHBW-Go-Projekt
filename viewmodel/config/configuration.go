@@ -40,6 +40,7 @@ func init() {
 		"server.crt", "server.key", "./view/", "view/qrCodes/", "model/assets/locations.xml")
 
 	SetFlagsForLinks("/", "/login", "/logout", "/location", "/end", "/view/")
+	flag.Parse()
 }
 
 //SetPrimaryFlags sets the flags for both servers and the token duration
